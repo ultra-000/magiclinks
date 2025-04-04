@@ -92,6 +92,9 @@ The `exclude` field is used to specify the directories to be excluded from the b
 
 **Any contribution is welcome!** really anything will be helpful, especially contributions made to this broken documentation, there is a lot of features that you could implement and a some bugs that you could fix, **so please feel free to contribute :)**.
 
+**Note:** if you could code using **snake_case** instead of **camelCase** it would be really great, thanks!
+if I found that people (if any) prefer **camelCase** then will switch to that instead.
+
 ## Thanks to free resources out there!
 
 I am a self-taught dev totally learning from free resources, if not for them I wouldn't be to build these things (especially Mozilla developer network and W3Schools), so this is my little gift to the community, hopefully it will be of some benefit :).

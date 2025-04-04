@@ -7,6 +7,8 @@ this is especially useful when the resources' locations used in you project (e.g
 
 the concept is similar if not identical to the concept of [magic numbers](https://en.wikipedia.org/wiki/Magic_number_(programming)) or read [this stackoverflow post](https://stackoverflow.com/questions/47882/what-are-magic-numbers-and-why-do-some-consider-them-bad) if you don't prefer wikipedia's style.
 
+if you were afraid of changing some resource's location and breaking every file in your project that is depending on that resource then this library will be very helpful for you.
+
 ## Installation:
 
 ```sh

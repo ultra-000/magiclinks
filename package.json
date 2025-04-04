@@ -1,0 +1,23 @@
+{
+  "name": "magiclinks",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "type": "module",
+  "bin": {
+    "magiclinks": "src/main.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "irony",
+    "magic",
+    "links",
+    "transformation",
+    "replace"
+  ],
+  "license": "MIT",
+  "description": "Replace magic links in your project using magic!"
+}

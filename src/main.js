@@ -35,8 +35,19 @@ async function load_config (config_locations) {
  * @param {string} dist_dir the output directory
  * @returns {void} 
  */
-function process_files (files, links, dist_dir) {
-  files.filter((file) => file.name.endsWith(".html") && file.isFile()).forEach(({ name, parentPath: file_path }) => {
+function process_files (files, links, dist_dir, types, excluded_types) {
+  files.filter((file) => {
+    let ext = "";
+    for (let index = file.name.length - 1; index >= 0; index--) {
+      if (file.name[index] === ".") {
+        ext = file.name.slice(index + 1);
+        break;
+      }
+    }
+
+    if (!types.length) return file.isFile() && !excluded_types.includes(ext);
+    else return file.isFile() && types.includes(ext) && !excluded_types.includes(ext);
+  }).forEach(({ name, parentPath: file_path }) => {
     fs.readFile(path.join(file_path, name), { encoding: "utf-8" }, (error, contents) => {
       if (error) {
         console.error(`Error reading file ${file_path}/${name}:`, error.message);
@@ -81,7 +92,7 @@ async function main () {
     process.exit(1);
   });
 
-  const { src_dirs, exclude, links } = config;
+  const { src_dirs, exclude, links, types, excluded_types } = config;
   const dist_dir = parsed_parameters["-o"] || config.dist_dir || "dist"; // This line is kinda verbose and annoying, but it works so...
 
   // Make sure no one will have a hard time if they accidentally configured something incorrectly.
@@ -96,6 +107,12 @@ async function main () {
     process.exit(1);
   } else if (!Array.isArray(exclude)) {
     console.error("Invalid configuration: `exclude` must be an array.");
+    process.exit(1);
+  } else if (!Array.isArray(types)) {
+    console.error("Invalid configuration: `types` must be an array.");
+    process.exit(1);
+  } else if (!Array.isArray(excluded_types)) {
+    console.error("Invalid configuration: `excluded_types` must be an array.");
     process.exit(1);
   }
 
@@ -124,7 +141,7 @@ async function main () {
             process.exit(1);
           }
 
-          process_files(files, links, dist_dir);
+          process_files(files, links, dist_dir, types, excluded_types);
         });
       });
     });
@@ -136,7 +153,7 @@ async function main () {
           process.exit(1);
         }
 
-        process_files(files, links, dist_dir);
+        process_files(files, links, dist_dir, types, excluded_types);
       });
     });
   }

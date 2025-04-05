@@ -43,12 +43,14 @@ The configuration file contains the links mappings and other options that Magicl
 
 export default {
   links: { // Define your links mappings here.
-    $_github: "https://github.com",
+    $_github: "https://github.com"
     $_some_resource_with_a_variable_location: "assets/images/apple-touch-icon.png"
   },
   src_dirs: [], // An empty array means: read all directories in the current directory except for the `dist_dir` directory.
   dist_dir: "dist", // Change if needed.
   exclude: ["node_modules", ".git", "dist"], // The directories to exclude from the process (e.g. `node_modules`).
+  types: ["html", "haml", "css", "js", "ejs", "jsx", "ts", "tsx"], // An empty array means: include all types/formats of files in the build process.
+  excluded_types: ["cpp", "cs", "kt"] // use this to exclude types/formats of files that shouldn't be included in the build process.
 };
 ```
 
@@ -93,6 +95,14 @@ The `dist_dir` field is used to specify the output directory.
 
 The `exclude` field is used to specify the directories to be excluded from the build process.
 
+## The `types` field
+
+The `types` field is used to specify the types/formats/extensions of files to be included in the build process.
+
+## The `excluded_types` field
+
+The `excluded_types` field is used to specify types/formats/extensions of files to be excluded from the build process.
+
 ## Contribution
 
 **Any contribution is welcome!** really anything will be helpful, especially contributions made to this broken documentation, there is a lot of features that you could implement and a some bugs that you could fix, **so please feel free to contribute :)**.
@@ -112,7 +122,9 @@ export default {
   links: {}, // Define your links mappings here.
   src_dirs: [], // An empty array means: read all directories in the current directory except for the `dist_dir` directory.
   dist_dir: "dist", // Change if needed.
-  exclude: ["node_modules", ".git", "dist"], // The directories to exclude from the process (e.g. `node_modules`).
+  exclude: ["node_modules", ".git", "dist"], // The directories to be excluded from the process (e.g. `node_modules`).
+  types: ["html", "haml", "css", "js", "ejs", "jsx", "ts", "tsx"], // An empty array means: include all types/formats of files in the build process.
+  excluded_types: [] // use this to exclude types/formats of files that shouldn't be included in the build process.
 };
 ```
 this mostly for absolute juniors out there, as I have been one before and it was really hard navigating my way through huge projects (I am not saying that this is a huge project by any means) and finding the most basic of things, don't underestimate it even such a small thing will help the developers of less experience that are often overlooked.

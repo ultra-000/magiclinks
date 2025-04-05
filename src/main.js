@@ -14,12 +14,11 @@ import parse_parameters from "./utils/parse_cli_parameters.js";
  * @throws {Error} When no valid configuration file could be found at any location
  */
 async function load_config (config_locations) {
-  const root_dir = process.cwd();
   for (const config_path of config_locations) {
     if (!config_path) continue;
 
     try {
-      const config = config_path.includes(root_dir) ? await import(config_path) : await import(path.join(root_dir, config_path));
+      const config = await import(config_path);
       return config.default;
     } catch (error) {
       console.error(`Error loading configuration from ${config_path}:`, error.message);
@@ -77,7 +76,7 @@ async function main () {
   const root_dir = process.cwd();
   const parsed_parameters = parse_parameters(process.argv);
 
-  const config = await load_config([parsed_parameters["-c"], ...CONFIG_LOCATIONS]).catch((error) => {
+  const config = await load_config([parsed_parameters["-c"] ? path.join(root_dir, parsed_parameters["-c"]) : undefined, ...CONFIG_LOCATIONS]).catch((error) => {
     console.error("Error loading configuration:", error.message);
     process.exit(1);
   });

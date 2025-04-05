@@ -18,7 +18,7 @@ async function load_config (config_locations) {
     if (!config_path) continue;
 
     try {
-      const config = await import(config_path);
+      const config = await import(path.join(process.cwd(), config_path));
       return config.default;
     } catch (error) {
       continue; // Try next location.

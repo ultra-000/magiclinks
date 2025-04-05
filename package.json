@@ -6,6 +6,15 @@
   "bin": {
     "magiclinks": "src/main.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ultra-000/magiclinks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ultra-000/magiclinks/issues"
+  },
+  "homepage": "https://github.com/ultra-000/magiclinks#readme",
+  "author": "Abd Elrahman Nour",
   "files": [
     "src",
     "README.md",

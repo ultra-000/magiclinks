@@ -28,11 +28,14 @@ or
 npx magiclinks --config <path-to-config-file> --output <path-to-output-directory>
 ```
 
+when using the `-c` or `--config` option you can place your config file futher down your project tree and not outside of it.
+**IMPORTANT: you should run these commands at your project's root ⚠️**
+
 ### The configuration file
 
 The configuration file contains the links mappings and other options that Magiclinks will use to operate.
 
-**it should be placed at the project root and be named magiclinks.config.js** ⚠️
+**it should be placed at the project root and be named magiclinks.config.js if your not using `-c` or `--config` option ⚠️**
 
 **Here is a sample configuration file:**
 ```js

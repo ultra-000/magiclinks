@@ -56,6 +56,8 @@ export default {
 
 ### that is it for the brief introduction
 you can read more if you want to but this is probably will get you started.
+<hr>
+<br>
 
 ### The `links` field
 
@@ -79,11 +81,15 @@ and then in your project files:
 
 then if you were to change that resource location say to something like `resources/images/apple-touch-icon.png` you only need to change the URL in one place which is in your `links` field and **not in each and every file that ever used or still using that resource**.
 
-**Note:** your not restricted to the `$_` prefix you could really have anything as the key, it just a convention I made to avoid interactions with strings that aren't meant to be related to Magiclinks, but I recommend stcking to it as who knows maybe it will be used in a special way in the future.
+**Note:** your not restricted to the `$_` prefix you could really have anything as the key, it just a convention I made to avoid interactions with strings that aren't meant to be related to Magiclinks, but I recommend sticking to it as who knows maybe it will be used in a special way in the future.
+
+<br>
 
 ### The `src_dirs` field
 
 The `src_dirs` field is used to specify the directories to include in the build process, if you didn't specify any directories **the whole project will be read except for the directory specified in the `dist_dir` field**.
+
+<br>
 
 ### The `dist_dir` field
 
@@ -91,17 +97,34 @@ The `dist_dir` field is used to specify the output directory.
 
 **Note: Your project structure will be preserved**.
 
+<br>
+
 ### The `exclude` field
 
 The `exclude` field is used to specify the directories to be excluded from the build process.
 
-## The `types` field
+**Note: no matter how deep a directory specified in the `exclude` field it will be ***excluded*** for example: say you setup your `magiclinks.config.js` configuration file to be like this:
+```js
+export default {
+  exclude: ["node_modules"],
+  // rest of the configuration options...
+}
+```
+and you got `node_modules` at your project's root and another `node_modules` directory deep down your project's tree like `packages/utils/node_modules` both of these directories will be **excluded** because their names appeard at the `exclude` field.
+
+<br>
+
+### The `types` field
 
 The `types` field is used to specify the types/formats/extensions of files to be included in the build process.
 
-## The `excluded_types` field
+<br>
+
+### The `excluded_types` field
 
 The `excluded_types` field is used to specify types/formats/extensions of files to be excluded from the build process.
+
+<br>
 
 ## Contribution
 

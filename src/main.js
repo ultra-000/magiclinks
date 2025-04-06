@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "fs";
 import path from "path";
+import { pathToFileURL } from "url";
 import { CONFIG_LOCATIONS } from "./constants.js";
 import parse_parameters from "./utils/parse_cli_parameters.js";
 
@@ -115,7 +116,7 @@ async function read_directory (directory) {
 async function main () {
   console.info("Magiclinks Running...");
 
-  const config = await load_config([parsed_parameters["-c"] ? path.join(root_dir, parsed_parameters["-c"]) : undefined, ...CONFIG_LOCATIONS]).catch((error) => {
+  const config = await load_config([parsed_parameters["-c"] ? pathToFileURL(parsed_parameters["-c"]).href : undefined, ...CONFIG_LOCATIONS]).catch((error) => {
     console.error("Error loading configuration:", error.message);
     process.exit(1);
   });

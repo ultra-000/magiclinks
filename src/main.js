@@ -89,8 +89,7 @@ async function process_files (files, config) {
  * @returns {object[]} The filtered directories.
  */
 function filter_directories (directories, config) {
-  const { exclude } = config;
-  const dist_dir = path.normalize(config.dist_dir); // <= to get rid of something like `./` which could be typed by the user in the config file.
+  const { exclude, dist_dir } = config;
   return directories.filter((dir) => dir.name !== dist_dir
   && !(exclude.includes(dir.name) || exclude.includes("./" + dir.name))
   && dir.isDirectory());
@@ -123,7 +122,7 @@ async function main () {
   });
 
   const { src_dirs, exclude, links, types, excluded_types } = config;
-  const dist_dir = parsed_parameters["-o"] || config.dist_dir || "dist";
+  const dist_dir = config.dist_dir = path.normalize(parsed_parameters["-o"] || config.dist_dir || ""); // I won't provide a default value.
 
   // Make sure no one will have a hard time if they accidentally configured something incorrectly.
   if (Array.isArray(links) || typeof links !== "object") {
@@ -132,7 +131,12 @@ async function main () {
   } else if (!Array.isArray(src_dirs)) {
     console.error("Invalid configuration: `src_dirs` must be an array.");
     process.exit(1);
-  } else if (typeof dist_dir !== "string") {
+  } else if (typeof dist_dir !== "string" || dist_dir === "." || dist_dir === "./") {
+    if (dist_dir === "." || dist_dir === "./") {
+      console.error("No source directory were specified."); // Trying to be as specific as possible.
+      process.exit(1);
+    }
+
     console.error("Invalid configuration: `dist_dir` must be a string.");
     process.exit(1);
   } else if (!Array.isArray(exclude)) {

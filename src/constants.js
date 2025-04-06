@@ -1,10 +1,11 @@
 import path from "path";
+import { pathToFileURL } from "url";
 
 export const CONFIG_LOCATIONS = [
     // Project root configuration file, mid priority.
-    path.join(process.cwd(), "magiclinks.config.js"),
+    pathToFileURL("magiclinks.config.js").href,
     // User's home directory, lowest priority.
-    path.join(process.env.HOME, ".magiclinks.config.js"),
+    pathToFileURL(path.join(process.env.HOME, ".magiclinks.config.js")),
 ];
 
 export const CLI_PARAMETERS_SPEC = {

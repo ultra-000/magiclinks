@@ -9,6 +9,8 @@ the concept is similar if not identical to the concept of [magic numbers](https:
 
 if you were afraid of changing some resource's location and breaking every file in your project that is depending on that resource then this library will be very helpful for you.
 
+**Note:** I am developing this on Linux and I am not testing this on Windows or Mac, **so compatibility will potentially be like trash**, if you encountered any problems please feel free to [open an issue](https://github.com/ultra-000/magiclinks/issues)
+
 ## Installation:
 
 ```sh

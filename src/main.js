@@ -4,6 +4,9 @@ import path from "path";
 import { CONFIG_LOCATIONS } from "./constants.js";
 import parse_parameters from "./utils/parse_cli_parameters.js";
 
+const root_dir = process.cwd();
+const parsed_parameters = parse_parameters(process.argv);
+
 /**
  * Loads the configuration file from multiple possible locations in order of priority.
  * Searches through CLI arguments, project root, and user home directory.
@@ -31,11 +34,11 @@ async function load_config (config_locations) {
 /**
  * The function responsible for transforming raw files into their final form
  * @param {object[]} files the files to be processed and transferred into the final distribution directory
- * @param {object} links the links to be used in the replacement process
- * @param {string} dist_dir the output directory
+ * @param {object} config the configuration object loaded via the `loade_config` function.
  * @returns {void} 
  */
-function process_files (files, links, dist_dir, types, excluded_types) {
+function process_files (files, config) {
+  const { dist_dir, types, excluded_types, links } = config;
   files.filter((file) => {
     let ext = "";
     for (let index = file.name.length - 1; index >= 0; index--) {
@@ -77,6 +80,33 @@ function process_files (files, links, dist_dir, types, excluded_types) {
   });
 }
 
+/**
+ * Filters the given directories based on the config.
+ * @param {object[]} directories The directories to filter.
+ * @param {object} config The configuration object loaded via the `load_config` function.
+ * @returns {object[]} The filtered directories.
+ */
+function filter_directories (directories, config) {
+  const { exclude } = config;
+  const dist_dir = path.join(config.dist_dir, "") // <= Joining paths to get rid of something like `./`
+  return directories.filter((dir) => dir.name !== dist_dir
+  && !(exclude.includes(dir.name) || exclude.includes("./" + dir.name))
+  && dir.isDirectory());
+}
+
+/**
+ * Reads the given directory and returns its contents.
+ * @param {string} directory The directory to read.
+ * @returns {Promise<object[]>} The contents of the directory as an array of file objects.
+ */
+async function read_directory (directory) {
+  const contents = await fs.promises.readdir(directory, { withFileTypes: true }).catch((error) => {
+    console.error(`Error reading directory ${directory}:`, error.message);
+    process.exit(1);
+  });
+
+  return contents;
+}
 
 /**
  * Main entry point for the application.
@@ -84,8 +114,6 @@ function process_files (files, links, dist_dir, types, excluded_types) {
  */
 async function main () {
   console.info("Magiclinks Running...");
-  const root_dir = process.cwd();
-  const parsed_parameters = parse_parameters(process.argv);
 
   const config = await load_config([parsed_parameters["-c"] ? path.join(root_dir, parsed_parameters["-c"]) : undefined, ...CONFIG_LOCATIONS]).catch((error) => {
     console.error("Error loading configuration:", error.message);
@@ -93,7 +121,7 @@ async function main () {
   });
 
   const { src_dirs, exclude, links, types, excluded_types } = config;
-  const dist_dir = parsed_parameters["-o"] || config.dist_dir || "dist"; // This line is kinda verbose and annoying, but it works so...
+  const dist_dir = parsed_parameters["-o"] || config.dist_dir || "dist";
 
   // Make sure no one will have a hard time if they accidentally configured something incorrectly.
   if (Array.isArray(links) || typeof links !== "object") {
@@ -117,45 +145,29 @@ async function main () {
   }
 
   if (!src_dirs.length) {
-    fs.readdir(root_dir, { encoding: "utf8", withFileTypes: true }, (error, src_dirs) => {
-      if (error) {
-        console.error(`Error reading directory ${root_dir}:`, error.message);
-        process.exit(1);
-      }
-
-      src_dirs = 
-        src_dirs.filter((dir) => path.join(dir.parentPath, dir.name) !== path.join(dir.parentPath, dist_dir)
-        && !exclude.includes(dir.name)
-        && dir.isDirectory());
+    const contents = await read_directory(".");
+    process_files(contents, config);
+    const directories = filter_directories(contents, config);
       
-        // If no source directories were found, exit with the program.
-      if (!src_dirs.length) {
-        console.error("No source directories found. exiting program...");
-        process.exit(1);
-      }
-
-      src_dirs.forEach(({ name }) => {
-        fs.readdir(name, { encoding: "utf8", recursive: true, withFileTypes: true }, (error, files) => {
-          if (error) {
-            console.error(`Error reading directory ${name}:`, error.message);
-            process.exit(1);
-          }
-
-          process_files(files, links, dist_dir, types, excluded_types);
-        });
-      });
-    });
+    while (directories.length) {
+      const dir = directories.pop();
+      const dirContents = await read_directory(path.join(dir.parentPath, dir.name));
+      process_files(dirContents, config);
+      directories.push(...filter_directories(dirContents, config));
+    }
   } else {
-    src_dirs.forEach((src_dir) => {
-      fs.readdir(src_dir, { encoding: "utf8", recursive: true, withFileTypes: true }, (error, files) => {
-        if (error) {
-          console.error(`Error reading directory ${src_dir}:`, error.message);
-          process.exit(1);
-        }
+    for (const src_dir of src_dirs) {
+      const contents = await read_directory(src_dir);
+      process_files(contents, config);
+      const directories = filter_directories(contents, config);
 
-        process_files(files, links, dist_dir, types, excluded_types);
-      });
-    });
+      while (directories.length) {
+        const dir = directories.pop();
+        const dirContents = await read_directory(path.join(dir.parentPath, dir.name));
+        process_files(dirContents, config);
+        directories.push(...filter_directories(dirContents, config));
+      }
+    }
   }
 }
 

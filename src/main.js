@@ -33,14 +33,15 @@ async function load_config (config_locations) {
 }
 
 /**
- * The function responsible for transforming raw files into their final form
+ * The function responsible for transforming raw files into their final form.
+ * **NOTE**: the function modifies the `files` parameter.
  * @param {object[]} files the files to be processed and transferred into the final distribution directory
  * @param {object} config the configuration object loaded via the `loade_config` function.
  * @returns {void} 
  */
-function process_files (files, config) {
+async function process_files (files, config) {
   const { dist_dir, types, excluded_types, links } = config;
-  files.filter((file) => {
+  files = files.filter((file) => {
     let ext = "";
     for (let index = file.name.length - 1; index >= 0; index--) {
       if (file.name[index] === ".") {
@@ -51,34 +52,34 @@ function process_files (files, config) {
 
     if (!types.length) return file.isFile() && !excluded_types.includes(ext);
     else return file.isFile() && types.includes(ext) && !excluded_types.includes(ext);
-  }).forEach(({ name, parentPath: file_path }) => {
-    fs.readFile(path.join(file_path, name), { encoding: "utf-8" }, (error, contents) => {
-      if (error) {
-        console.error(`Error reading file ${file_path}/${name}:`, error.message);
-		    process.exit(1);
-      }
-
-      for (const key of Object.keys(links)) {
-        contents = contents.replaceAll(key, links[key]);
-      }
-
-      fs.mkdir(path.join(dist_dir, file_path), { recursive: true }, (error) => {
-        if (error) {
-          console.error(`Error creating directory for ${file_path}/${name}:`, error.message);
-		      process.exit(1);
-        }
-
-        fs.writeFile(path.join(dist_dir, file_path, name), contents, (error) => {
-          if (error) {
-            console.error(`Error writing file ${file_path}/${name})}:`, error.message);
-			      process.exit(1);
-          } else {
-            console.info(`Processed ${file_path}/${name}`);
-          }
-        });
-      });
-    });
+    
   });
+
+  for (const { name, parentPath: parent_path } of files) {
+    const file_path = path.join(parent_path, name);
+    const final_file_dir = path.join(dist_dir, parent_path);
+
+    let contents = await fs.promises.readFile(file_path, { encoding: "utf-8" }).catch((error) => {
+      console.error(`Error reading file ${file_path}:`, error.message);
+		  process.exit(1);
+    });
+
+    for (const key of Object.keys(links)) {
+      contents = contents.replaceAll(key, links[key]);
+    }
+
+    await fs.promises.mkdir(final_file_dir, { recursive: true }).catch((error) => {
+      console.error(`Error creating directory for ${file_path}:`, error.message);
+		  process.exit(1);
+    });
+
+    await fs.promises.writeFile(path.join(dist_dir, file_path), contents, { encoding: "utf-8" }).then((result) => {
+      console.info(`Processed ${file_path}`);
+    }).catch((error) => {
+      console.error(`Error writing file ${file_path})}:`, error.message);
+			process.exit(1);
+    });
+  }
 }
 
 /**
@@ -89,7 +90,7 @@ function process_files (files, config) {
  */
 function filter_directories (directories, config) {
   const { exclude } = config;
-  const dist_dir = path.join(config.dist_dir, "") // <= Joining paths to get rid of something like `./`
+  const dist_dir = path.normalize(config.dist_dir); // <= to get rid of something like `./` which could be typed by the user in the config file.
   return directories.filter((dir) => dir.name !== dist_dir
   && !(exclude.includes(dir.name) || exclude.includes("./" + dir.name))
   && dir.isDirectory());

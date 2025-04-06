@@ -5,7 +5,7 @@ export const CONFIG_LOCATIONS = [
     // Project root configuration file, mid priority.
     pathToFileURL("magiclinks.config.js").href,
     // User's home directory, lowest priority.
-    pathToFileURL(path.join(process.env.HOME, ".magiclinks.config.js")),
+    pathToFileURL(path.join(process.env.HOME, ".magiclinks.config.js")).href,
 ];
 
 export const CLI_PARAMETERS_SPEC = {

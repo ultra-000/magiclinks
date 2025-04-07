@@ -1,6 +1,13 @@
 # Magiclinks
 
-## Brief and important information
+<br/>
+
+[![npm version](https://img.shields.io/npm/v/magiclinks.svg)](https://www.npmjs.com/package/magiclinks)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contribution-)
+
+
+## Brief and important information 📝
 
 Use Magiclinks to replace static links in your project with dynamic ones.
 this is especially useful when the resources' locations used in you project (e.g. an image) are **subject to change**.
@@ -11,11 +18,15 @@ if you were afraid of changing some resource's location and breaking every file 
 
 **💡 Note:** I am developing this on Linux and I am not testing this on Windows or Mac, **so compatibility will potentially be like trash**, if you encountered any problems please feel free to [open an issue](https://github.com/ultra-000/magiclinks/issues)
 
+<br/>
+
 ## Installation: 
 
 ```sh
 npm install --save-dev magiclinks
 ```
+
+<br/>
 
 ## Usage: 
 ```sh
@@ -31,6 +42,8 @@ npx magiclinks --config <path-to-config-file> --output <path-to-output-directory
 ```
 
 **IMPORTANT: you should run these commands at your project's root ⚠️**
+
+<br/>
 
 ### The configuration file
 
@@ -55,10 +68,14 @@ export default {
 };
 ```
 
-### that is it for the brief introduction
+<br/>
+
+### that is it for the brief introduction 🏁
 you can read more if you want to but this is probably will get you started.
-<hr>
-<br>
+
+<br/>
+
+## Configuration Options ⚙️
 
 ### The `links` field 🔗
 
@@ -144,17 +161,17 @@ export async function login(credentials) {
 
 After building using the `npx magiclinks` command, all `$_` prefixed strings will be replaced with their actual values, making it easy to change endpoints or asset locations in one place.
 
-**💡 Note:** While Magiclinks works great with any file type, it's particularly powerful in languages that don't have native variables support like HTML, XML, or something similar. but in JavaScript or even CSS you got native variables that could be used to achieve similar results.
+**💡 Note:** While Magiclinks works great with any file type, **it's particularly powerful in languages that don't have native variables support** like HTML, XML, or something similar. but in JavaScript or even CSS you got native variables that could be used to achieve similar results.
 
 **💡 Note:** your not restricted to the `$_` prefix you could really have anything as the key, it just a convention I made to avoid interactions with strings that aren't meant to be related to Magiclinks, but I recommend sticking to it as who knows maybe it will be used in a special way in the future.
 
-<br>
+<br/>
 
 ### The `src_dirs` field 📂
 
 The `src_dirs` field is used to specify the directories to include in the build process, if you didn't specify any directories **the whole project will be read except for the directories specified in the `dist_dir` and the `exclude` fields**.
 
-<br>
+<br/>
 
 ### The `dist_dir` field ↪️
 
@@ -162,7 +179,7 @@ The `dist_dir` field is used to specify the output directory.
 
 **💡 Note: Your project structure will be preserved**.
 
-<br>
+<br/>
 
 ### The `exclude` field ⛔️
 
@@ -175,32 +192,36 @@ export default {
   // rest of the configuration options...
 }
 ```
-and you got `node_modules` at your project's root and another `node_modules` directory deep down your project's tree like `packages/utils/node_modules` both of these directories will be **excluded** because their names appeard at the `exclude` field.
+and you got `node_modules` at your project's root and another `node_modules` directory deep down your project's tree like `packages/utils/node_modules` both of these directories will be **excluded** because their names appeared at the `exclude` field.
 
-<br>
+<br/>
 
 ### The `types` field 📄
 
 The `types` field is used to specify the types/formats/extensions of files to be included in the build process.
 
-<br>
+<br/>
 
 ### The `excluded_types` field ⛔️
 
 The `excluded_types` field is used to specify types/formats/extensions of files to be excluded from the build process.
 
-<br>
+<br/>
 
 ## Contribution 🌏️
 
 **Any contribution is welcome!** really anything will be helpful, especially contributions made to this broken documentation, there is a lot of features that you could implement and a some bugs that you could fix, **so please feel free to contribute :)**.
 
-**💡 Note:** if you could code using **snake_case** instead of **camelCase** it would be really great, thanks!
+**💡 Note:** if you could code using **snake_case** instead of **camelCase** it would be really great thanks!,
 if I found that people (if any) prefer **camelCase** then will switch to that instead.
+
+<br/>
 
 ## Thanks to free resources out there! 🙏
 
 I am a self-taught dev totally learning from free resources, if not for them I wouldn't be to build these things (especially Mozilla developer network and W3Schools), so this is my little gift to the community, hopefully it will be of some benefit :).
+
+<br/>
 
 ### Another thing... 👇️
 

@@ -4,6 +4,7 @@ import path from "path";
 import { pathToFileURL } from "url";
 import { CONFIG_LOCATIONS } from "./constants.js";
 import parse_parameters from "./utils/parse_cli_parameters.js";
+import { validate_config } from "./utils/config_validation.js";
 
 const root_dir = process.cwd();
 const parsed_parameters = parse_parameters(process.argv);
@@ -13,9 +14,9 @@ const parsed_parameters = parse_parameters(process.argv);
  * Searches through CLI arguments, project root, and user home directory.
  * 
  * @async
- * @param {string[]} config_locations The configuration locations, first valid location will be used
- * @returns {Promise<object>} The loaded configuration object
- * @throws {Error} When no valid configuration file could be found at any location
+ * @param {string[]} config_locations - The configuration locations, first valid location will be used
+ * @returns {Promise<object>} - The loaded configuration object
+ * @throws {Error} - When no valid configuration file could be found at any location
  */
 async function load_config (config_locations) {
   for (const config_path of config_locations) {
@@ -35,8 +36,9 @@ async function load_config (config_locations) {
 /**
  * The function responsible for transforming raw files into their final form.
  * **NOTE**: the function modifies the `files` parameter.
- * @param {object[]} files the files to be processed and transferred into the final distribution directory
- * @param {object} config the configuration object loaded via the `loade_config` function.
+ * @async
+ * @param {object[]} files - The files to be processed and transferred into the final distribution directory
+ * @param {object} config - The configuration object loaded via the `loade_config` function.
  * @returns {void} 
  */
 async function process_files (files, config) {
@@ -84,9 +86,9 @@ async function process_files (files, config) {
 
 /**
  * Filters the given directories based on the config.
- * @param {object[]} directories The directories to filter.
- * @param {object} config The configuration object loaded via the `load_config` function.
- * @returns {object[]} The filtered directories.
+ * @param {object[]} directories - The directories to filter.
+ * @param {object} config - The configuration object loaded via the `load_config` function.
+ * @returns {object[]} - The filtered directories.
  */
 function filter_directories (directories, config) {
   const { exclude, dist_dir } = config;
@@ -97,8 +99,9 @@ function filter_directories (directories, config) {
 
 /**
  * Reads the given directory and returns its contents.
- * @param {string} directory The directory to read.
- * @returns {Promise<object[]>} The contents of the directory as an array of file objects.
+ * @async
+ * @param {string} directory - The directory to read.
+ * @returns {Promise<object[]>} - The contents of the directory as an array of file objects.
  */
 async function read_directory (directory) {
   const contents = await fs.promises.readdir(directory, { withFileTypes: true }).catch((error) => {
@@ -110,71 +113,50 @@ async function read_directory (directory) {
 }
 
 /**
+ * Recursively processes directories and their contents, applying transformations and writing the results to the distribution directory.
+ * @async
+ * @param {string} initial_directory - The initial directory to use as a starting point.
+ * @param {object} config - The configuration object containing settings for the processing.
+ * @returns {void}
+ */
+async function directories_waterfall (initial_directory, config) {
+  const contents = await read_directory(initial_directory);
+  process_files(contents, config);
+  const directories = filter_directories(contents, config);
+
+  while (directories.length) {
+    const dir = directories.pop();
+    const dir_path = path.join(dir.parentPath, dir.name);
+    const dir_contents = await read_directory(dir_path);
+
+    process_files(dir_contents, config);
+    directories.push(...filter_directories(dir_contents, config));
+  }
+}
+
+/**
  * Main entry point for the application.
- * @returns {void} 
+ * @async
+ * @returns {void}
  */
 async function main () {
   console.info("Magiclinks Running...");
 
-  const config = await load_config([parsed_parameters["-c"] ? pathToFileURL(parsed_parameters["-c"]).href : undefined, ...CONFIG_LOCATIONS]).catch((error) => {
+  const config = await load_config([
+    parsed_parameters["-c"] ? pathToFileURL(parsed_parameters["-c"]).href : undefined,
+    ...CONFIG_LOCATIONS
+  ]).catch((error) => {
     console.error("Error loading configuration:", error.message);
     process.exit(1);
   });
 
-  const { src_dirs, exclude, links, types, excluded_types } = config;
-  const dist_dir = config.dist_dir = path.normalize(parsed_parameters["-o"] || config.dist_dir || ""); // I won't provide a default value.
+  const { src_dirs } = config;
+  config.dist_dir = path.normalize(parsed_parameters["-o"] || config.dist_dir || "");
 
-  // Make sure no one will have a hard time if they accidentally configured something incorrectly.
-  if (Array.isArray(links) || typeof links !== "object") {
-    console.error("Invalid configuration: `links` must be an object.");
-    process.exit(1);
-  } else if (!Array.isArray(src_dirs)) {
-    console.error("Invalid configuration: `src_dirs` must be an array.");
-    process.exit(1);
-  } else if (typeof dist_dir !== "string" || dist_dir === "." || dist_dir === "./") {
-    if (dist_dir === "." || dist_dir === "./") {
-      console.error("No source directory were specified."); // Trying to be as specific as possible.
-      process.exit(1);
-    }
+  validate_config(config);
 
-    console.error("Invalid configuration: `dist_dir` must be a string.");
-    process.exit(1);
-  } else if (!Array.isArray(exclude)) {
-    console.error("Invalid configuration: `exclude` must be an array.");
-    process.exit(1);
-  } else if (!Array.isArray(types)) {
-    console.error("Invalid configuration: `types` must be an array.");
-    process.exit(1);
-  } else if (!Array.isArray(excluded_types)) {
-    console.error("Invalid configuration: `excluded_types` must be an array.");
-    process.exit(1);
-  }
-
-  if (!src_dirs.length) {
-    const contents = await read_directory(".");
-    process_files(contents, config);
-    const directories = filter_directories(contents, config);
-      
-    while (directories.length) {
-      const dir = directories.pop();
-      const dirContents = await read_directory(path.join(dir.parentPath, dir.name));
-      process_files(dirContents, config);
-      directories.push(...filter_directories(dirContents, config));
-    }
-  } else {
-    for (const src_dir of src_dirs) {
-      const contents = await read_directory(src_dir);
-      process_files(contents, config);
-      const directories = filter_directories(contents, config);
-
-      while (directories.length) {
-        const dir = directories.pop();
-        const dirContents = await read_directory(path.join(dir.parentPath, dir.name));
-        process_files(dirContents, config);
-        directories.push(...filter_directories(dirContents, config));
-      }
-    }
-  }
+  if (!src_dirs.length) directories_waterfall(".", config);
+  else for (const src_dir of src_dirs) directories_waterfall(src_dir, config);
 }
 
 main();

@@ -67,7 +67,7 @@ async function process_files (files, config) {
     });
 
     for (const key of Object.keys(links)) {
-      const regex = new RegExp(`(?<="|'|\`)\\${key}(?="|'|\`)`, "g");
+      const regex = new RegExp(`(?<="|'|\`|./|/|../)\\${key}(?="|'|\`|/)`, "g");
       contents = contents.replace(regex, links[key]);
     }
 

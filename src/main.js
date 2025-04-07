@@ -94,7 +94,7 @@ async function process_files (files, config) {
 function filter_directories (directories, config) {
   const { exclude, dist_dir } = config;
   return directories.filter((dir) => dir.name !== dist_dir
-  && !(exclude.includes(dir.name) || exclude.includes("./" + dir.name))
+  && !exclude.includes(dir.name)
   && dir.isDirectory());
 }
 
@@ -151,10 +151,16 @@ async function main () {
     process.exit(1);
   });
 
-  validate_config(config);
+  const original_dist_dir = path.normalize(config.dist_dir || "");
+  config.dist_dir = parsed_parameters["-o"] ? path.normalize(parsed_parameters["-o"]) : original_dist_dir;
 
-  const { src_dirs } = config;
-  config.dist_dir = path.normalize(parsed_parameters["-o"] || config.dist_dir);
+  validate_config(config);
+  const { src_dirs, exclude } = config;
+  if (config.dist_dir !== original_dist_dir) exclude.push(original_dist_dir);
+
+  for (let index = 0; index < exclude.length; index++) { // Format the directories coming from the user.
+    exclude[index] = path.normalize(exclude[index]);
+  }
 
   if (!src_dirs.length) directories_waterfall(".", config);
   else for (const src_dir of src_dirs) directories_waterfall(src_dir, config);

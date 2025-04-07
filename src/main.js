@@ -151,10 +151,10 @@ async function main () {
     process.exit(1);
   });
 
-  const { src_dirs } = config;
-  config.dist_dir = path.normalize(parsed_parameters["-o"] || config.dist_dir || "");
-
   validate_config(config);
+
+  const { src_dirs } = config;
+  config.dist_dir = path.normalize(parsed_parameters["-o"] || config.dist_dir);
 
   if (!src_dirs.length) directories_waterfall(".", config);
   else for (const src_dir of src_dirs) directories_waterfall(src_dir, config);

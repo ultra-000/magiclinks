@@ -14,7 +14,7 @@ export function validate_config(config) {
         message: "`src_dirs` must be an array"
       },
       dist_dir: {
-        validate: value => typeof value === "string" && value !== "." && value !== "./",
+        validate: value => typeof value === "string" && value.length && value !== "." && value !== "./",
         message: "No output directory specified or `dist_dir` must be a valid string"
       },
       exclude: {

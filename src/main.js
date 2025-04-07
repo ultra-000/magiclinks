@@ -67,7 +67,8 @@ async function process_files (files, config) {
     });
 
     for (const key of Object.keys(links)) {
-      contents = contents.replaceAll(key, links[key]);
+      const regex = new RegExp(`(?<="|'|\`)\\${key}(?="|'|\`)`, "g");
+      contents = contents.replace(regex, links[key]);
     }
 
     await fs.promises.mkdir(final_file_dir, { recursive: true }).catch((error) => {

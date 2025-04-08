@@ -16,7 +16,7 @@ the concept is similar if not identical to the concept of [magic numbers](https:
 
 if you were afraid of changing some resource's location and breaking every file in your project that is depending on that resource then this library will be very helpful for you.
 
-**💡 Note:** I am developing this on Linux and I am not testing this on Windows or Mac, **so compatibility will potentially be like trash**, if you encountered any problems please feel free to [open an issue](https://github.com/ultra-000/magiclinks/issues)
+**💡 Note:** The library is still on its eraly stages so a lot of changes, refinements and features will be made so bare with me until it gets to a stable version. If you encountered any problems please feel free to [open an issue](https://github.com/ultra-000/magiclinks/issues)
 
 <br/>
 
@@ -49,7 +49,7 @@ npx magiclinks --config <path-to-config-file> --output <path-to-output-directory
 
 The configuration file contains the links mappings and other options that Magiclinks will use to operate.
 
-**it should be placed at the project root and be named magiclinks.config.js if your not using `-c` or `--config` option to specify a custom location ⚠️**
+**it should be placed at the project root and be named `magiclinks.config.js` if your not using `-c` or `--config` option to specify a custom location ⚠️**
 
 **Here is a sample configuration file:**
 ```js
@@ -70,7 +70,7 @@ export default {
 
 <br/>
 
-### that is it for the brief introduction 🏁
+### That is it for the brief introduction 🏁
 you can read more if you want to but this is probably will get you started.
 
 <br/>
@@ -121,7 +121,8 @@ export default {
   ],
   dist_dir: "dist",
   exclude: ["node_modules", ".git", "build", "coverage"],
-  types: ["js", "jsx", "ts", "tsx"]
+  types: ["js", "jsx", "ts", "tsx"],
+  excluded_types: []
 }
 ```
 
@@ -163,7 +164,7 @@ After building using the `npx magiclinks` command, all `$_` prefixed strings wil
 
 **💡 Note:** While Magiclinks works great with any file type, **it's particularly powerful in languages that don't have native variables support** like HTML, XML, or something similar. but in JavaScript or even CSS you got native variables that could be used to achieve similar results.
 
-**💡 Note:** your not restricted to the `$_` prefix you could really have anything as the key, it just a convention I made to avoid interactions with strings that aren't meant to be related to Magiclinks, but I recommend sticking to it as who knows maybe it will be used in a special way in the future.
+**💡 Note:** Your not restricted to the `$_` prefix you could really have anything as the key, it just a convention I made to avoid interactions with strings that aren't meant to be related to Magiclinks, but I recommend sticking to it as who knows maybe it will be used in a special way in the future.
 
 <br/>
 
@@ -185,7 +186,7 @@ The `dist_dir` field is used to specify the output directory.
 
 The `exclude` field is used to specify the directories to be excluded from the build process.
 
-**💡 Note: no matter how deep a directory specified in the `exclude` field it will be ***excluded*** for example: say you setup your `magiclinks.config.js` configuration file to be like this:
+**💡 Note: No matter how deep a directory specified in the `exclude` field it will be ***excluded*** for example: say you setup your `magiclinks.config.js` configuration file to be like this:**
 ```js
 export default {
   exclude: ["node_modules"],
@@ -212,7 +213,7 @@ The `excluded_types` field is used to specify types/formats/extensions of files 
 
 **Any contribution is welcome!** really anything will be helpful, especially contributions made to this broken documentation, there is a lot of features that you could implement and a some bugs that you could fix, **so please feel free to contribute :)**.
 
-**💡 Note:** if you could code using **snake_case** instead of **camelCase** it would be really great thanks!,
+**💡 Note:** If you could code using **snake_case** instead of **camelCase** it would be really great thanks!,
 if I found that people (if any) prefer **camelCase** then will switch to that instead.
 
 <br/>

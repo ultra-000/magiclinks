@@ -1,6 +1,6 @@
 {
   "name": "magiclinks",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "main": "src/main.js",
   "type": "module",
   "bin": {

@@ -5,6 +5,7 @@
 [![npm version](https://img.shields.io/npm/v/magiclinks.svg)](https://www.npmjs.com/package/magiclinks)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contribution-)
+[![Changelog](https://img.shields.io/badge/changelog-browse-brightgreen)](CHANGELOG.md)
 
 
 ## Brief and important information 📝
@@ -16,7 +17,7 @@ the concept is similar if not identical to the concept of [magic numbers](https:
 
 if you were afraid of changing some resource's location and breaking every file in your project that is depending on that resource then this library will be very helpful for you.
 
-**💡 Note:** The library is still on its eraly stages so a lot of changes, refinements and features will be made so bare with me until it gets to a stable version. If you encountered any problems please feel free to [open an issue](https://github.com/ultra-000/magiclinks/issues)
+**💡 Note:** The library is still on its eraly stages so a lot of changes, refinements and features will be made so bare with me until it gets to a stable version. If you want to have a look at these changes you can check the [CHANGELOG.md](CHANGELOG.md). And if you encountered any problems please feel free to [open an issue](https://github.com/ultra-000/magiclinks/issues).
 
 <br/>
 

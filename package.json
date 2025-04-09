@@ -17,8 +17,9 @@
   "author": "Abd Elrahman Nour",
   "files": [
     "src",
+    "LICENSE",
     "README.md",
-    "LICENSE"
+    "CHANGELOG.md"
   ],
   "keywords": [
     "irony",

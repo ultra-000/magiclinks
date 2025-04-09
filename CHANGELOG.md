@@ -12,6 +12,19 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
+## [v1.2.12] - 2025-04-09
+
+### Added
+- Added `CHANGELOG.md` file ([commit](https://github.com/ultra-000/magiclinks/commit/f352bc0e420a82f8a25765aa2e55f195f960bf27))
+
+### Changed
+- Updated `README.md` ([commit](https://github.com/ultra-000/magiclinks/commit/f352bc0e420a82f8a25765aa2e55f195f960bf27))
+
+### Removed
+- Removed unused `package-lock.json` ([commit](https://github.com/ultra-000/magiclinks/commit/f352bc0e420a82f8a25765aa2e55f195f960bf27))
+
+<br/>
+
 ## [v1.2.11] - 2025-04-08
 
 ### Changed
@@ -19,14 +32,14 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
-## [v1.2.10] - 2025-04-08
+## [v1.2.10] - 2025-04-07
 
 ### Changed
 - Ensured predictability of the library ([commit](https://github.com/ultra-000/magiclinks/commit/0d7702215e9221a32ac06f667f877eb7f2060ef8))
 
 <br/>
 
-## [v1.2.9] - 2025-04-08
+## [v1.2.9] - 2025-04-07
 
 ### Fixed
 - Corrected validation logic for `dist_dir` property and corrected the config validation logic position in the execution timeline ([commit](https://github.com/ultra-000/magiclinks/commit/15ea375808bdd114ec3b7db85611f247386f36f1))
@@ -67,7 +80,7 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
-## [v1.2.4] - 2025-04-07
+## [v1.2.4] - 2025-04-06
 
 ### Changed
 - Code refactored, some adjustments and code readability improvements
@@ -106,21 +119,21 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
-## [v1.1.1] - 2025-04-06
+## [v1.1.1] - 2025-04-05
 
 ### Changed
 - Additional metadata added to the `package.json` file ([commit](https://github.com/ultra-000/magiclinks/commit/c4a66debe73c3f2ad1ea0d0d7fcf44fede84587a))
 
 <br/>
 
-## [v1.1.0] - 2025-04-06
+## [v1.1.0] - 2025-04-05
 
 ### Added
 - Added support for building from other formats/extensions of files ([commit](https://github.com/ultra-000/magiclinks/commit/a1643b4f4ec907652139a13d1ef3371b75ab63be))
 
 <br/>
 
-## [v1.0.4] - 2025-04-06
+## [v1.0.4] - 2025-04-05
 
 ### Changed
 - Updated the `README.md` file with more info ([commit](https://github.com/ultra-000/magiclinks/commit/2d4ae8f95391e686a93396e52969a76a2beb943c))
@@ -151,11 +164,12 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
-## [v1.0.0] - 2025-04-05
+## [v1.0.0] - 2025-04-04
 
 ### Added
 - First release for Magiclinks ([commit](67078ccf5930877bfd37d7bd11c205c83ab5c1f9))
 
+[v1.2.12]: https://github.com/ultra-000/magiclinks/tree/ea84e87f1ffd10382d1615845662cce3abb22e19
 [v1.2.11]: https://github.com/ultra-000/magiclinks/tree/b748777a188de7718863636c81b104bb460602f4
 [v1.2.10]: https://github.com/ultra-000/magiclinks/tree/ef094e589ba60bf31f731da0b13a79b1a099e795
 [v1.2.9]: https://github.com/ultra-000/magiclinks/tree/a6a5a96a3fc23275bf275242363cdd1460660c68

@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased changes
 
-None.
+### Changed
+- Added a section in `CHANGELOG.md` for the latest version of the package ([commit](https://github.com/ultra-000/magiclinks/commit/8ee305dc3e462afa7f1cd5a0e50eadac252b8d19))
+- Corrected some incorrect dates in `CHANGELOG.md` ([commit](https://github.com/ultra-000/magiclinks/commit/8ee305dc3e462afa7f1cd5a0e50eadac252b8d19))
 
-More technical details [here](https://github.com/ultra-000/magiclinks/compare/HEAD...HEAD)
+More technical details [here](https://github.com/ultra-000/magiclinks/compare/ea84e87f1ffd10382d1615845662cce3abb22e19...HEAD)
 
 <br/>
 

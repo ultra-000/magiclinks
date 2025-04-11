@@ -166,8 +166,6 @@ After building using the `npx magiclinks` command, all `$_` prefixed strings wil
 
 ### The `src_dirs` field 📂
 
-The `src_dirs` field specifies which directories to process. An empty array will cause the library to exit without doing anything.
-
 The `src_dirs` field is used to specify the directories to include in the build process, if you didn't specify any directories **the library will exit without doing anything**.
 
 Now the glob patterns used in `src_dirs` or `exclude` are the same but needs a little explanation, unlike for example TypeScript take on glob patterns handling I have took a slightly different route.

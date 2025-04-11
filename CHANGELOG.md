@@ -6,11 +6,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased changes
 
-### Changed
-- Added a section in `CHANGELOG.md` for the latest version of the package ([commit](https://github.com/ultra-000/magiclinks/commit/8ee305dc3e462afa7f1cd5a0e50eadac252b8d19))
-- Corrected some incorrect dates in `CHANGELOG.md` ([commit](https://github.com/ultra-000/magiclinks/commit/8ee305dc3e462afa7f1cd5a0e50eadac252b8d19))
+<br/>
 
-More technical details [here](https://github.com/ultra-000/magiclinks/compare/ea84e87f1ffd10382d1615845662cce3abb22e19...HEAD)
+More technical details [here](https://github.com/ultra-000/magiclinks/compare/HEAD...HEAD)
+
+<br/>
+
+## [v2.0.1] - 2025-04-11
+
+### Changed
+- Removed a duplicate line in README.md file ([commit](https://github.com/ultra-000/magiclinks/commit/ca468268234453bc15032856744e317f9a58a8e1))
+
+<br/>
+
+## [v2.0.0] - 2025-04-11
+
+### Added
+- Added support for specifying source directories and excluded directories via glob patterns ([commit](https://github.com/ultra-000/magiclinks/commit/d8c53d4b879e97247ecf7851f399664096c0f67f))
+
+### Changed
+- Changed the old way of specifying source directroies and excluded directories via bare paths ([commit](https://github.com/ultra-000/magiclinks/commit/d8c53d4b879e97247ecf7851f399664096c0f67f))
+
+<br/>
+
+## [v1.3.0] - 2025-04-11
+
+Mistake, wasn't meant to be published. ([commit](https://github.com/ultra-000/magiclinks/commit/6a416c99fbee4481a276f37b884b28ef6b877c2f))
 
 <br/>
 
@@ -171,6 +192,9 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/ea
 ### Added
 - First release for Magiclinks ([commit](67078ccf5930877bfd37d7bd11c205c83ab5c1f9))
 
+[v2.0.1]: https://github.com/ultra-000/magiclinks/tree/aba4e3ce3c61e1480cabe616a50b1debb642f82e
+[v2.0.0]: https://github.com/ultra-000/magiclinks/tree/7ee75e012874b646f21c07b23ec2cdb97ebd9b00
+[v1.3.0]: https://github.com/ultra-000/magiclinks/tree/6a416c99fbee4481a276f37b884b28ef6b877c2f
 [v1.2.12]: https://github.com/ultra-000/magiclinks/tree/ea84e87f1ffd10382d1615845662cce3abb22e19
 [v1.2.11]: https://github.com/ultra-000/magiclinks/tree/b748777a188de7718863636c81b104bb460602f4
 [v1.2.10]: https://github.com/ultra-000/magiclinks/tree/ef094e589ba60bf31f731da0b13a79b1a099e795

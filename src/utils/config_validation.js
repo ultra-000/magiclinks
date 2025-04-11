@@ -20,14 +20,6 @@ export function validate_config(config) {
       exclude: {
         validate: Array.isArray,
         message: "`exclude` must be an array"
-      },
-      types: {
-        validate: Array.isArray,
-        message: "`types` must be an array"
-      },
-      excluded_types: {
-        validate: Array.isArray,
-        message: "`excluded_types` must be an array"
       }
     };
   

@@ -61,11 +61,9 @@ export default {
     $_github: "https://github.com"
     $_some_resource_with_a_variable_location: "assets/images/apple-touch-icon.png"
   },
-  src_dirs: ["src/components", "views", "public"], // An empty array means: read the whole project except for the `dist_dir` and the directories in the `exclude` fields.
-  dist_dir: "dist", // Change if needed.
-  exclude: ["node_modules", ".git", "build"], // The directories to exclude from the process (e.g. `node_modules`).
-  types: ["html", "haml", "css", "js", "ejs", "jsx", "ts", "tsx"], // An empty array means: include all types/formats of files in the build process.
-  excluded_types: ["cpp", "cs", "kt"] // use this to exclude types/formats of files that shouldn't be included in the build process.
+  src_dirs: ["**/src/**", "**/views/**/*.html", "scripts/*.{js,ts}"], // The directories to be processed (e.g. `src`).
+  dist_dir: "./dist", // Change if needed. This will be excluded from the process by default. NOTE: this is a normal path not a glob pattern.
+  exclude: ["**/node_modules/**", "**/.git/**", "**/.env", "**/.gitignore", "**/build/**"], // The directories to be excluded from the process (e.g. `node_modules`).
 };
 ```
 
@@ -114,16 +112,13 @@ export default {
     $_logo_light: "/branding/logo-light.svg"
   },
   src_dirs: [
-    "src/components",
-    "src/pages",
-    "src/layouts",
-    "src/features",
-    "public"
+    "**/src/components/**/*.{js,ts}",
+    "src/pages/**",
+    "src/layouts/**",
+    "public/*.html"
   ],
   dist_dir: "dist",
-  exclude: ["node_modules", ".git", "build", "coverage"],
-  types: ["js", "jsx", "ts", "tsx"],
-  excluded_types: []
+  exclude: ["**/node_modules/**", "**/.git/**", "**/build/**", "**/coverage/**"],
 }
 ```
 
@@ -171,7 +166,41 @@ After building using the `npx magiclinks` command, all `$_` prefixed strings wil
 
 ### The `src_dirs` field 📂
 
-The `src_dirs` field is used to specify the directories to include in the build process, if you didn't specify any directories **the whole project will be read except for the directories specified in the `dist_dir` and the `exclude` fields**.
+The `src_dirs` field specifies which directories to process. An empty array will cause the library to exit without doing anything.
+
+The `src_dirs` field is used to specify the directories to include in the build process, if you didn't specify any directories **the library will exit without doing anything**.
+
+Now the glob patterns used in `src_dirs` or `exclude` are the same but needs a little explanation, unlike for example TypeScript take on glob patterns handling I have took a slightly different route.
+
+Here's how glob patterns work in Magiclinks:
+
+#### 1. Direct Files Only
+```js
+src_dirs: ["src"]     // Only matches files directly in src/
+src_dirs: ["src/*"]   // Same behavior as above
+```
+
+Unlike TypeScript where `"src"` includes everything recursively, Magiclinks requires you to be explicit about depth.
+
+#### 2. Deep Include
+```js
+src_dirs: ["src/**"]  // Matches all files in src/ at any depth, just like regular agreed upon glob patterns, so nothing special.
+```
+
+#### 3. Standard Glob Patterns
+Magiclinks uses the [glob](https://www.npmjs.com/package/glob?activeTab=readme) npm package for pattern matching support if you want to check any specific thing.
+
+Some examples for standard patterns:
+
+```js
+src_dirs: [
+  "**/src/**",           // All files in any src directory at any depth
+  "**/src/*.{js,ts}",    // Only JS/TS files directly in any src directory
+  "public/*.html",       // HTML files directly in public/
+]
+```
+
+**💡 Note:** Be explicit about what you want to include - Magiclinks favors clarity over convenience.
 
 <br/>
 
@@ -187,26 +216,7 @@ The `dist_dir` field is used to specify the output directory.
 
 The `exclude` field is used to specify the directories to be excluded from the build process.
 
-**💡 Note: No matter how deep a directory specified in the `exclude` field it will be ***excluded*** for example: say you setup your `magiclinks.config.js` configuration file to be like this:**
-```js
-export default {
-  exclude: ["node_modules"],
-  // rest of the configuration options...
-}
-```
-and you got `node_modules` at your project's root and another `node_modules` directory deep down your project's tree like `packages/utils/node_modules` both of these directories will be **excluded** because their names appeared at the `exclude` field.
-
-<br/>
-
-### The `types` field 📄
-
-The `types` field is used to specify the types/formats/extensions of files to be included in the build process.
-
-<br/>
-
-### The `excluded_types` field ⛔️
-
-The `excluded_types` field is used to specify types/formats/extensions of files to be excluded from the build process.
+**💡 Note: You don't need to exclude the `dist_dir` (i.e. the output directory) manually as it is excluded by default.**
 
 <br/>
 
@@ -231,11 +241,9 @@ Here is a ready-to-use config file, you could consider it as the "default" confi
 ```js
 export default {
   links: {}, // Define your links mappings here.
-  src_dirs: [], // An empty array means: read the whole project except for the `dist_dir` and the directories in the `exclude` fields.
-  dist_dir: "dist", // Change if needed.
-  exclude: ["node_modules", ".git", "build"], // The directories to be excluded from the process (e.g. `node_modules`).
-  types: ["html", "haml", "css", "js", "ejs", "jsx", "ts", "tsx"], // An empty array means: include all types/formats of files in the build process.
-  excluded_types: [] // use this to exclude types/formats of files that shouldn't be included in the build process.
+  src_dirs: ["**/src/**", "**/public/**"], // The directories to be processed (e.g. `src`).
+  dist_dir: "./dist", // Change if needed. This will be excluded from the process by default. NOTE: this is a normal path not a glob pattern.
+  exclude: ["**/node_modules/**", "**/.git/**", "**/.env", "**/.gitignore", "**/build/**"], // The directories to be excluded from the process (e.g. `node_modules`).
 };
 ```
 this ready-to-go file is mostly for absolute juniors out there, as I have been one before and it was really hard navigating my way through huge projects (I am not saying that this is a huge project by any means) and finding the most basic of things, don't underestimate it even such a small thing will help the developers of less experience that are often overlooked.

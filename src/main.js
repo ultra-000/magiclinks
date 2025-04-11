@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "fs";
 import path from "path";
+import { glob } from "glob";
 import { pathToFileURL } from "url";
 import { CONFIG_LOCATIONS } from "./constants.js";
 import parse_parameters from "./utils/parse_cli_parameters.js";
@@ -35,31 +36,17 @@ async function load_config (config_locations) {
 
 /**
  * The function responsible for transforming raw files into their final form.
- * **NOTE**: the function modifies the `files` parameter.
  * @async
  * @param {object[]} files - The files to be processed and transferred into the final distribution directory
  * @param {object} config - The configuration object loaded via the `loade_config` function.
  * @returns {void} 
  */
 async function process_files (files, config) {
-  const { dist_dir, types, excluded_types, links } = config;
-  files = files.filter((file) => {
-    let ext = "";
-    for (let index = file.name.length - 1; index >= 0; index--) {
-      if (file.name[index] === ".") {
-        ext = file.name.slice(index + 1);
-        break;
-      }
-    }
-
-    if (!types.length) return file.isFile() && !excluded_types.includes(ext);
-    else return file.isFile() && types.includes(ext) && !excluded_types.includes(ext);
-    
-  });
-
+  const { dist_dir, links } = config;
+  
   for (const { name, parentPath: parent_path } of files) {
-    const file_path = path.join(parent_path, name);
-    const final_file_dir = path.join(dist_dir, parent_path);
+    const file_path = path.relative(root_dir, path.join(parent_path, name));
+    const final_file_dir = path.join(dist_dir, path.dirname(file_path));
 
     let contents = await fs.promises.readFile(file_path, { encoding: "utf-8" }).catch((error) => {
       console.error(`Error reading file ${file_path}:`, error.message);
@@ -87,6 +74,7 @@ async function process_files (files, config) {
 
 /**
  * Filters the given directories based on the config.
+ * @deprecated This function is deprecated and will be removed in future versions (maybe, not totally sure).
  * @param {object[]} directories - The directories to filter.
  * @param {object} config - The configuration object loaded via the `load_config` function.
  * @returns {object[]} - The filtered directories.
@@ -136,6 +124,34 @@ async function directories_waterfall (initial_directory, config) {
 }
 
 /**
+ * Handles glob patterns and returns the matching files.
+ * @async
+ * @param {string[]} patterns - The glob patterns to match files against.
+ * @param {string[]} excluded - The directories to exclude from the matching process.
+ * @returns {Promise<object[]>} - The matching files as an array of file objects.
+ */
+async function handle_glob_patterns (patterns, excluded) {
+  const files = [];
+  for (const pattern of patterns) {
+      const exclusion_regex = /\*\*$|\/\*$|\/.*\..*$/; // TODO: separate this last matching pattern.
+
+      if (exclusion_regex.test(pattern)) {
+          files.push(...[...await glob(pattern, {
+              ignore: excluded,
+              withFileTypes: true,
+          })].filter(f => !f.isDirectory()));
+      } else {
+          files.push(...[...await glob(pattern + (pattern.endsWith("/") ? "*" : "/*"), {
+              ignore: excluded,
+              withFileTypes: true,
+          })].filter(f => !f.isDirectory()));
+      }
+  }
+
+  return files;
+}
+
+/**
  * Main entry point for the application.
  * @async
  * @returns {void}
@@ -151,19 +167,15 @@ async function main () {
     process.exit(1);
   });
 
-  const original_dist_dir = path.normalize(config.dist_dir || "");
-  config.dist_dir = parsed_parameters["-o"] ? path.normalize(parsed_parameters["-o"]) : original_dist_dir;
-
   validate_config(config);
   const { src_dirs, exclude } = config;
-  if (config.dist_dir !== original_dist_dir) exclude.push(original_dist_dir);
+  const original_dist_dir = config.dist_dir;
+  config.dist_dir = path.normalize(parsed_parameters["-o"] || config.dist_dir);
 
-  for (let index = 0; index < exclude.length; index++) { // Format the directories coming from the user.
-    exclude[index] = path.normalize(exclude[index]);
-  }
+  exclude.push(original_dist_dir + "/**", config.dist_dir + "/**"); // TODO: make it beautiful!.
 
-  if (!src_dirs.length) directories_waterfall(".", config);
-  else for (const src_dir of src_dirs) directories_waterfall(src_dir, config);
+  if (!src_dirs.length) { console.info("No source directories were provided. exiting..."); process.exit(0); }
+  else process_files(await handle_glob_patterns(src_dirs, exclude), config);
 }
 
 main();

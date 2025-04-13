@@ -1,5 +1,10 @@
 import path from "path";
 import { pathToFileURL } from "url";
+import parse_parameters from "./utils/parse_cli_parameters.js";
+
+export const ROOT_DIR = process.cwd();
+export const FILES_MATCHING_REGEX = /\/\*\*$|\/\*$|^\*\*$|\/.*\..*$/; // TODO: separate this last matching pattern.
+
 
 export const CONFIG_LOCATIONS = [
     // Project root configuration file, mid priority.
@@ -19,5 +24,12 @@ export const CLI_PARAMETERS_SPEC = {
         expects_value: true,
         verbose: "--output",
         description: "specify the output directory"
+    },
+    "-w": {
+        expects_value: false,
+        verbose: "--watch",
+        description: "enable watch mode"
     }
 }
+
+export const PARSED_PARAMETERS = parse_parameters(process.argv);

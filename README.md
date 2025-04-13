@@ -33,16 +33,8 @@ npm install --save-dev magiclinks
 ```sh
 npx magiclinks
 ```
-if you want you could specify an on-the-fly configuration file or output directory using:
-```sh
-npx magiclinks -c <path-to-config-file> -o <path-to-output-directory>
-```
-or 
-```sh
-npx magiclinks --config <path-to-config-file> --output <path-to-output-directory>
-```
 
-**IMPORTANT: you should run these commands at your project's root ⚠️**
+**IMPORTANT: you should run this command at your project's root ⚠️**
 
 <br/>
 
@@ -64,6 +56,7 @@ export default {
   src_dirs: ["**/src/**", "**/views/**/*.html", "scripts/*.{js,ts}"], // The directories to be processed (e.g. `src`).
   dist_dir: "./dist", // Change if needed. This will be excluded from the process by default. NOTE: this is a normal path not a glob pattern.
   exclude: ["**/node_modules/**", "**/.git/**", "**/.env", "**/.gitignore", "**/build/**"], // The directories to be excluded from the process (e.g. `node_modules`).
+  watch: true, // Watch for file changes and build only that changed file once it changes.
 };
 ```
 
@@ -71,6 +64,40 @@ export default {
 
 ### That is it for the brief introduction 🏁
 you can read more if you want to but this is probably will get you started.
+
+<br/>
+
+## CLI (Command-line) Options 👩‍💻
+
+### `-w` or `--watch` option
+
+Watch for file changes and build only that changed file once it changes. Example:
+```sh
+npx magiclinks -w
+```
+this option is also available in the configuration file as well.
+
+<br/>
+
+### `-c` or `--config` option
+
+Specify a custom on-the-fly configuration file. Example:
+```sh
+npx magiclinks -c <path-to-config-file>
+# or
+npx magiclinks --config <path-to-config-file>
+```
+
+<br/>
+
+### `-o` or `--output` option
+
+Specify a custom on-the-fly output directory.
+```sh
+npx magiclinks -o <path-to-output-directory>
+# or
+npx magiclinks --output <path-to-output-directory>
+```
 
 <br/>
 
@@ -119,6 +146,7 @@ export default {
   ],
   dist_dir: "dist",
   exclude: ["**/node_modules/**", "**/.git/**", "**/build/**", "**/coverage/**"],
+  watch: false,
 }
 ```
 
@@ -242,6 +270,7 @@ export default {
   src_dirs: ["**/src/**", "**/public/**"], // The directories to be processed (e.g. `src`).
   dist_dir: "./dist", // Change if needed. This will be excluded from the process by default. NOTE: this is a normal path not a glob pattern.
   exclude: ["**/node_modules/**", "**/.git/**", "**/.env", "**/.gitignore", "**/build/**"], // The directories to be excluded from the process (e.g. `node_modules`).
+  watch: false, // Watch for file changes and build only that changed file once it changes.
 };
 ```
 this ready-to-go file is mostly for absolute juniors out there, as I have been one before and it was really hard navigating my way through huge projects (I am not saying that this is a huge project by any means) and finding the most basic of things, don't underestimate it even such a small thing will help the developers of less experience that are often overlooked.

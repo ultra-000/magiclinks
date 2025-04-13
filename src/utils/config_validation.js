@@ -1,3 +1,5 @@
+import { extract_dirs_from_glob } from "./glob_utils.js";
+
 /**
  * Validates the configuration object based on predefined rules.
  * @param {object} config - The configuration object to validate.
@@ -15,12 +17,16 @@ export function validate_config(config) {
       },
       dist_dir: {
         validate: value => typeof value === "string" && value.length && value !== "." && value !== "./",
-        message: "No output directory specified or `dist_dir` must be a valid string"
+        message: "No output directory specified or `dist_dir` must be a valid destination"
       },
       exclude: {
         validate: Array.isArray,
         message: "`exclude` must be an array"
-      }
+      },
+      watch: {
+        validate: value => typeof value === "boolean",
+        message: "`watch` must be a boolean"
+      },
     };
   
     for (const [key, rule] of Object.entries(validation_rules)) {

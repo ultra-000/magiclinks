@@ -1,5 +1,3 @@
-import { extract_dirs_from_glob } from "./glob_utils.js";
-
 /**
  * Validates the configuration object based on predefined rules.
  * @param {object} config - The configuration object to validate.

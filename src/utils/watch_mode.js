@@ -1,5 +1,4 @@
 import fs from "fs";
-import path from "path";
 import process_files from "./process_files.js";
 
 export default function watch (directories, config) {

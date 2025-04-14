@@ -70,6 +70,13 @@ export async function extract_dirs_from_glob_deprecated (patterns, exclude) {
     return dirs;
 }
 
+/**
+ * Extracts directories from glob patterns
+ * @async
+ * @param {string[]} patterns - The glob patterns to extract directories from
+ * @param {string[]} exclude - The glob patterns to exclude dircetories with
+ * @returns {string[]} - The directories as an array of paths
+ */
 export async function extract_dirs_from_glob (patterns, exclude) {
     const dirs = [];
 

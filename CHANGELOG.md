@@ -12,6 +12,13 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
+## [v2.1.0] - 2025-04-13
+
+### Added
+- Added watch mode ([commit](https://github.com/ultra-000/magiclinks/commit/b95b1a031572f2fe60cb5d19a3b01ffd7cb534e1))
+
+<br/>
+
 ## [v2.0.1] - 2025-04-11
 
 ### Changed
@@ -192,6 +199,7 @@ Mistake, wasn't meant to be published. ([commit](https://github.com/ultra-000/ma
 ### Added
 - First release for Magiclinks ([commit](67078ccf5930877bfd37d7bd11c205c83ab5c1f9))
 
+[v2.1.0]: https://github.com/ultra-000/magiclinks/tree/017fd54001a361e3800891e7be4c15f26935e169
 [v2.0.1]: https://github.com/ultra-000/magiclinks/tree/aba4e3ce3c61e1480cabe616a50b1debb642f82e
 [v2.0.0]: https://github.com/ultra-000/magiclinks/tree/7ee75e012874b646f21c07b23ec2cdb97ebd9b00
 [v1.3.0]: https://github.com/ultra-000/magiclinks/tree/6a416c99fbee4481a276f37b884b28ef6b877c2f

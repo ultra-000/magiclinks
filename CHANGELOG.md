@@ -12,6 +12,13 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
+## [v2.1.1] - 2025-04-13
+
+### Fixed
+- Fixed watch mode not respecting files filtering, which made it includes all files extensions regradless of the extensions specified via the glob patterns (how did I let this slip through 🤦) ([commit](https://github.com/ultra-000/magiclinks/commit/774f8de371d703ac9e40d66f12b27654428ac388))
+
+<br/>
+
 ## [v2.1.0] - 2025-04-13
 
 ### Added
@@ -199,6 +206,7 @@ Mistake, wasn't meant to be published. ([commit](https://github.com/ultra-000/ma
 ### Added
 - First release for Magiclinks ([commit](67078ccf5930877bfd37d7bd11c205c83ab5c1f9))
 
+[v2.1.1]: https://github.com/ultra-000/magiclinks/tree/7db12db278f1f9ae7df81cc3d5d007c2c8f3c056
 [v2.1.0]: https://github.com/ultra-000/magiclinks/tree/017fd54001a361e3800891e7be4c15f26935e169
 [v2.0.1]: https://github.com/ultra-000/magiclinks/tree/aba4e3ce3c61e1480cabe616a50b1debb642f82e
 [v2.0.0]: https://github.com/ultra-000/magiclinks/tree/7ee75e012874b646f21c07b23ec2cdb97ebd9b00

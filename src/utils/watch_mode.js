@@ -4,17 +4,18 @@ import process_files from "./process_files.js";
 /**
  * Watches specified directories for file changes and triggers processing.
  *
- * @param {string[]} directories - The directories to watch, passed as an array of directory paths.
+ * @param {string[]} directories - The directories to watch, passed as an object with the directory paths as keys.
  * @param {object} config - The configuration object containing the settings for the operation.
  * @returns {void}
  */
 export default function watch (directories, config) {
-    for (const dir of directories) {
+    for (const dir of Object.keys(directories)) {
         const watcher = fs.watch(dir);
     
         let counter = 0; // To avoid weird Node.js debounce bug.
         watcher.on("change", async (e, f) => {
             if (!f) return;
+            if (!directories[dir].include_all && !directories[dir].files[f]) return; 
             if (counter >= 1) { counter = 0; return; }
             else counter++;
 

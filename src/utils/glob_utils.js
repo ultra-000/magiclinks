@@ -1,6 +1,6 @@
 import path from "path";
 import { glob } from "glob";
-import { FILES_MATCHING_REGEX, ROOT_DIR } from "../constants.js";
+import { FILES_MATCHING_REGEX } from "../constants.js";
 
 /**
  * Handles glob patterns and returns the matching files.
@@ -71,37 +71,49 @@ export async function extract_dirs_from_glob_deprecated (patterns, exclude) {
 }
 
 /**
- * Extracts directories from glob patterns
+ * Extracts directories from glob patterns.
+ * Mainly to be used with the watch mode.
  * @async
  * @param {string[]} patterns - The glob patterns to extract directories from
  * @param {string[]} exclude - The glob patterns to exclude dircetories with
- * @returns {string[]} - The directories as an array of paths
+ * @returns {string[]} - The directories as an object with the directory paths as keys
  */
 export async function extract_dirs_from_glob (patterns, exclude) {
-    const dirs = [];
+    const dirs = {};
 
     for (const pattern of patterns) {
         const dirs_pattern_v1 = pattern + "/"; // A pattern to retrieve directories from globs like: `src/**`.
         const dirs_pattern_v2 = path.dirname(pattern)  + "/"; // A pattern to retrieve directories from files' globs example: `src/**/*.js`.
 
         if (/^\*\*$/.test(pattern)) { // He/she have included the whole project, so no need for futher extracting.
-            return [...await glob(dirs_pattern_v1, {
-                ignore: exclude
-            })];
+            const fresh_dirs = {};
+            for (const dir of [...await glob(dirs_pattern_v1, { ignore: exclude })]) {
+                fresh_dirs[dir] = { files: {} };
+            };
+
+            return fresh_dirs;
         }
 
         if (/\/\*\*$/.test(pattern)) {
-            dirs.push(...await glob(dirs_pattern_v1, {
-                ignore: exclude
-            }));
-        } else if (FILES_MATCHING_REGEX.test(pattern)) {
-            dirs.push(...await glob(dirs_pattern_v2, {
-                ignore: exclude
-            }));
+            for (const dir of [...await glob(dirs_pattern_v1, { ignore: exclude })]) {
+                !dirs[dir] ? dirs[dir] = { include_all: true, files: {} } : null;
+            } 
+        } else if (/\/.*\..*$/.test(pattern)) {
+            for (const dir of [...await glob(dirs_pattern_v2, { ignore: exclude })]) {
+                !dirs[dir] ? dirs[dir] = { include_all: false, files: {} } : null;
+                
+                for (const file of await glob(path.join(dir, path.basename(pattern)), { ignore: exclude })) {
+                    dirs[dir].files[path.basename(file)] = true;
+                }
+            } 
         } else {
-            dirs.push(...await glob(pattern, {
-                ignore: exclude
-            }));
+            for (const dir of [...await glob(dirs_pattern_v2, { ignore: exclude })]) {
+                !dirs[dir] ? dirs[dir] = { include_all: true, files: {} } : null;
+                
+                for (const file of await glob(path.join(dir, path.basename(pattern) + ".*"), { ignore: exclude })) {
+                    dirs[dir].files[path.basename(file)] = true;
+                }
+            } 
         }
     }
 

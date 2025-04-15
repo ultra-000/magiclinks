@@ -3,7 +3,11 @@ import { pathToFileURL } from "url";
 import parse_parameters from "./utils/parse_cli_parameters.js";
 
 export const ROOT_DIR = process.cwd();
-export const FILES_MATCHING_REGEX = /\/\*\*$|\/\*$|^\*\*$|\/.*\..*$/; // TODO: separate this last matching pattern.
+export const MATCH_ALL_GLOB = /^\*\*$/;
+export const FILES_MATCHING_GLOB = /\/.*\..*$/;
+export const DIRS_MATCHING_GLOB = /^(?!.*\.[^/]+$).*$/;
+export const DIRECT_CHILDREN_GLOB = /\/\*$/;
+export const GENERAL_MATCHING_GLOB = /\/\*\*$|.*\*$|\*.*$/;
 
 
 export const CONFIG_LOCATIONS = [

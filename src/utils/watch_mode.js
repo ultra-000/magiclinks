@@ -1,34 +1,47 @@
 import fs from "fs";
+import path from "path";
+import { watch } from "chokidar";
 import process_files from "./process_files.js";
 
 /**
  * Watches specified directories for file changes and triggers processing.
  *
- * @param {string[]} directories - The directories to watch, passed as an object with the directory paths as keys.
+ * @param {object} directories - The directories to watch, passed as an object with the directory paths as keys.
  * @param {object} config - The configuration object containing the settings for the operation.
  * @returns {void}
  */
-export default function watch (directories, config) {
-    for (const dir of Object.keys(directories)) {
-        const watcher = fs.watch(dir);
-    
-        let counter = 0; // To avoid weird Node.js debounce bug.
-        watcher.on("change", async (e, f) => {
-            if (!f) return;
-            if (!directories[dir].include_all && !directories[dir].files[f]) return; 
-            if (counter >= 1) { counter = 0; return; }
-            else counter++;
+export default function start_watch (directories, config) {
+    const { dist_dir } = config;
+    const watcher = watch(Object.keys(directories), {
+        ignoreInitial: true,
+        depth: 0,
+    });
 
-            process_files([{ name: f, parentPath: dir }], config);
+    function processing_helper (p) {
+        if (!p) return;
+
+        const dir = path.dirname(p);
+        if  (directories[dir].extensions.length && !directories[dir].extensions.includes(path.extname(p).substring(1))) return;
+        process_files([{ name: path.basename(p), parentPath: dir }], config);
+    }
+
+    watcher.on("ready", () => {
+        watcher.on("add", processing_helper);
+        watcher.on("change", processing_helper);
+        watcher.on("unlink", async (p) => {
+            if (!p) return;
+            const f = path.join(dist_dir, p);
+            await fs.promises.unlink(f).catch((error) => {
+                console.error(`Error while deleting ${f}:`, error.message);
+                process.exit(1);
+            });
+
+            console.info(`Deleted ${f}`);
         });
-    
+
         watcher.on("error", (error) => {
-            console.error(`Watcher error for directory ${dir}:`, error.message);
+            console.error(`Error while watching:`, error.message);
             process.exit(1);
         });
-    
-        watcher.on("close", () => {
-            console.log(`Watcher closed for directory: ${dir}`);
-        });      
-    }
+    });
 }

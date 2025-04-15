@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from "fs";
 import path from "path";
-import watch from "./utils/watch_mode.js";
+import start_watch from "./utils/watch_mode.js";
 import { PARSED_PARAMETERS } from "./constants.js";
 import process_files from "./utils/process_files.js";
 import { load_config_helper } from "./utils/config_loading.js";
@@ -51,7 +51,7 @@ async function main() {
     // Start watch mode after processing is done
     if (PARSED_PARAMETERS["-w"] || watch_mode) {
       console.info("Initial processing complete. Starting watch mode...");
-      watch(await extract_dirs_from_glob(src_dirs, exclude), config);
+      start_watch(await extract_dirs_from_glob(src_dirs, exclude), config);
     }
   } catch (error) {
     console.error("Error during processing:", error.message);

@@ -1,6 +1,6 @@
 import path from "path";
 import { glob } from "glob";
-import { FILES_MATCHING_REGEX } from "../constants.js";
+import { MATCH_ALL_GLOB, GENERAL_MATCHING_GLOB, FILES_MATCHING_GLOB, DIRS_MATCHING_GLOB, DIRECT_CHILDREN_GLOB } from "../constants.js";
 
 /**
  * Handles glob patterns and returns the matching files.
@@ -12,7 +12,7 @@ import { FILES_MATCHING_REGEX } from "../constants.js";
 export async function extract_files_from_glob (patterns, excluded) {
     const files = [];
     for (const pattern of patterns) {
-        if (FILES_MATCHING_REGEX.test(pattern)) {
+        if (FILES_MATCHING_GLOB.test(pattern)) {
             files.push(...[...await glob(pattern, {
                 ignore: excluded,
                 withFileTypes: true,
@@ -55,7 +55,7 @@ export async function extract_dirs_from_glob_deprecated (patterns, exclude) {
             return dirs;
         }
 
-        if (FILES_MATCHING_REGEX.test(pattern)) {
+        if (FILES_MATCHING_GLOB.test(pattern)) {
             const recursive = /\/\*\*$/.test(pattern);
             for (const dir of await glob(dirs_pattern, { ignore: exclude })) {
                 dirs[dir] = { recursive };
@@ -70,16 +70,35 @@ export async function extract_dirs_from_glob_deprecated (patterns, exclude) {
     return dirs;
 }
 
+export function extract_extensions_from_files_glob (pattern) {
+    if (/\/.*\.\*$/.test(pattern)) return []; // Means: include all extensions.
+    if (pattern[pattern.length] === "}") {
+        let ext_str = "";
+        for (let i = pattern.length - 2; i >= 0; i--) {
+            const c = pattern[i];
+            if (c === "*") return []; // Means: include all extensions.
+            if (c === "{") break;
+            if (c === " ") continue;
+            ext_str = c + ext_str;
+        }
+
+        return ext_str.split(",");
+    }
+
+    const ext = path.extname(pattern).substring(1);
+    return !ext.length ? [] : [ext];
+}
+
 /**
  * Extracts directories from glob patterns.
  * Mainly to be used with the watch mode.
  * @async
  * @param {string[]} patterns - The glob patterns to extract directories from
  * @param {string[]} exclude - The glob patterns to exclude dircetories with
- * @returns {string[]} - The directories as an object with the directory paths as keys
+ * @returns {object} - The directories as an object with the directory paths as keys
  */
 export async function extract_dirs_from_glob (patterns, exclude) {
-    const dirs = {};
+    const dirs = [];
 
     for (const pattern of patterns) {
         const dirs_pattern_v1 = pattern + "/"; // A pattern to retrieve directories from globs like: `src/**`.
@@ -87,33 +106,25 @@ export async function extract_dirs_from_glob (patterns, exclude) {
 
         if (/^\*\*$/.test(pattern)) { // He/she have included the whole project, so no need for futher extracting.
             const fresh_dirs = {};
-            for (const dir of [...await glob(dirs_pattern_v1, { ignore: exclude })]) {
-                fresh_dirs[dir] = { files: {} };
-            };
+            for (const dir of await glob(dirs_pattern_v1, { ignore: exclude })) {
+                fresh_dirs[dir] = { extensions: [] };
+            }
 
             return fresh_dirs;
         }
 
-        if (/\/\*\*$/.test(pattern)) {
-            for (const dir of [...await glob(dirs_pattern_v1, { ignore: exclude })]) {
-                !dirs[dir] ? dirs[dir] = { include_all: true, files: {} } : null;
-            } 
-        } else if (/\/.*\..*$/.test(pattern)) {
-            for (const dir of [...await glob(dirs_pattern_v2, { ignore: exclude })]) {
-                !dirs[dir] ? dirs[dir] = { include_all: false, files: {} } : null;
-                
-                for (const file of await glob(path.join(dir, path.basename(pattern)), { ignore: exclude })) {
-                    dirs[dir].files[path.basename(file)] = true;
-                }
-            } 
+        if (FILES_MATCHING_GLOB.test(pattern) || DIRECT_CHILDREN_GLOB.test(pattern)) {
+            for (const dir of await glob(DIRECT_CHILDREN_GLOB.test(pattern) && /\/\*\*\/\*$/ ? dirs_pattern_v1 : dirs_pattern_v2, { ignore: exclude })) {
+                !dirs[dir] ? dirs[dir] = { extensions: extract_extensions_from_files_glob(pattern) } : dirs[dir].extensions.push(...extract_extensions_from_files_glob(pattern));
+            }
+        } else if (GENERAL_MATCHING_GLOB.test(pattern) ) {
+            for (const dir of await glob(dirs_pattern_v1, { ignore: exclude })) {
+                !dirs[dir] ? dirs[dir] = { extensions: [] } : null;
+            }
         } else {
-            for (const dir of [...await glob(dirs_pattern_v2, { ignore: exclude })]) {
-                !dirs[dir] ? dirs[dir] = { include_all: true, files: {} } : null;
-                
-                for (const file of await glob(path.join(dir, path.basename(pattern) + ".*"), { ignore: exclude })) {
-                    dirs[dir].files[path.basename(file)] = true;
-                }
-            } 
+            for (const dir of await glob(pattern, { ignore: exclude })) {
+                !dirs[dir] ? dirs[dir] = { extensions: [] } : null;
+            }
         }
     }
 

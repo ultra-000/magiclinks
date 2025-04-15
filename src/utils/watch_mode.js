@@ -31,6 +31,7 @@ export default function start_watch (directories, config) {
         watcher.on("unlink", async (p) => {
             if (!p) return;
             const f = path.join(dist_dir, p);
+            if (!fs.existsSync(f)) return;
             await fs.promises.unlink(f).catch((error) => {
                 console.error(`Error while deleting ${f}:`, error.message);
                 process.exit(1);

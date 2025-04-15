@@ -12,6 +12,20 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
+## [v2.1.3] - 2025-04-15
+
+### Fixed
+- Fixed watch mode trying to delete non-existing files ([commit](https://github.com/ultra-000/magiclinks/commit/902d884442b946271ba3b0ea1671d24478982775))
+
+<br/>
+
+## [v2.1.2] - 2025-04-15
+
+### Changed
+- Used the `chokidar` library to ensure reliable files system watching ([commit](https://github.com/ultra-000/magiclinks/commit/58e32b5e8a9a70b846a1cc7e8309bb0b06a389dd))
+
+<br/>
+
 ## [v2.1.1] - 2025-04-13
 
 ### Fixed
@@ -206,6 +220,8 @@ Mistake, wasn't meant to be published. ([commit](https://github.com/ultra-000/ma
 ### Added
 - First release for Magiclinks ([commit](67078ccf5930877bfd37d7bd11c205c83ab5c1f9))
 
+[v2.1.3]: https://github.com/ultra-000/magiclinks/tree/b2d9fd0df6ada6abe8d8d95b91ff70741c07d448
+[v2.1.2]: https://github.com/ultra-000/magiclinks/tree/97ccc86a99801dc65fe6b3817c819d6943a340a8
 [v2.1.1]: https://github.com/ultra-000/magiclinks/tree/7db12db278f1f9ae7df81cc3d5d007c2c8f3c056
 [v2.1.0]: https://github.com/ultra-000/magiclinks/tree/017fd54001a361e3800891e7be4c15f26935e169
 [v2.0.1]: https://github.com/ultra-000/magiclinks/tree/aba4e3ce3c61e1480cabe616a50b1debb642f82e

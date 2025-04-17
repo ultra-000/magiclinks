@@ -1,3 +1,4 @@
+// from my exercism solution: https://exercism.org/tracks/javascript/exercises/matching-brackets/solutions/Ultra-0000
 export function isPaired(input)
 {
     const stack = [];

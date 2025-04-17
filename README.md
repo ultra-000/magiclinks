@@ -94,7 +94,9 @@ npx magiclinks --build
 
 Quickly sets up Magiclinks by creating a default `magiclinks.config.js` (or `.magiclinks.config.js` if you are in your OS-specific home directory) file in your current working directory.
 
-If the file already exists, it will prompt you to either overwrite it or cancel the operation.
+If a configuration file already exists, you'll be prompted to overwrite it.
+
+But because the configuration file is just a JavaScript file like any other, I expected people to use it as such, so overwriting won't really overwrite your whole file but just the `export default {}` block (if any). Preserving any code, functions or any other logic you might have.
 
 **Example:**
 
@@ -103,6 +105,8 @@ npx magiclinks -i
 # or
 npx magiclinks --init
 ```
+
+**💡 Note:** I should note that if your already-existing `magiclinks.config.js` or `.magiclinks.config.js` doesn't have a mount point (i.e. the `export default {}` statement) Magiclinks will tell you to make one and then it will exit, I won't provide it for you, you place it where you like!
 
 <br/>
 

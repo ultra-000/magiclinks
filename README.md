@@ -41,7 +41,7 @@ npx magiclinks
 
 The configuration file contains the links mappings and other options that Magiclinks will use to operate.
 
-**it should be placed at the project root and be named `magiclinks.config.js` if your not using `-c` or `--config` option to specify a custom location ⚠️**
+**it should be placed at the project root and be named `magiclinks.config.js` (or if it is global and meant to be placed in your OS-specific home directory it should be `.magiclinks.config.js`) if your not using `-c` or `--config` option to specify a custom location ⚠️**
 
 **Here is a sample configuration file:**
 ```js
@@ -304,19 +304,3 @@ if I found that people (if any) prefer **camelCase** then will switch to that in
 ## Thanks to free resources out there! 🙏
 
 I am a self-taught dev totally learning from free resources, if not for them I wouldn't be to build these things (especially Mozilla developer network and W3Schools), so this is my little gift to the community, hopefully it will be of some benefit :).
-
-<br/>
-
-### Another thing... 👇️
-
-Here is a ready-to-use config file, you could consider it as the "default" config file:
-```js
-export default {
-  links: {}, // Define your links mappings here.
-  src_dirs: ["**/src/**", "**/public/**"], // The directories to be processed (e.g. `src`).
-  dist_dir: "./dist", // Change if needed. This will be excluded from the process by default. NOTE: this is a normal path not a glob pattern.
-  exclude: ["**/node_modules/**", "**/.git/**", "**/.env", "**/.gitignore", "**/build/**"], // The directories to be excluded from the process (e.g. `node_modules`).
-  watch: false, // Watch for file changes and build only that changed file once it changes.
-};
-```
-this ready-to-go file is mostly for absolute juniors out there, as I have been one before and it was really hard navigating my way through huge projects (I am not saying that this is a huge project by any means) and finding the most basic of things, don't underestimate it even such a small thing will help the developers of less experience that are often overlooked.

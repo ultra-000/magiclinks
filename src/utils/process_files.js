@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { ROOT_DIR } from "../constants.js";
+import { PROCESS_CWD } from "../constants.js";
 
 /**
  * The function responsible for transforming raw files into their final form.
@@ -14,7 +14,7 @@ export default async function process_files(files, config) {
   
   // Process all files concurrently and wait for all to complete
   await Promise.all(files.map(async ({ name, parentPath: parent_path }) => {
-    const file_path = path.relative(ROOT_DIR, path.join(parent_path, name));
+    const file_path = path.relative(PROCESS_CWD, path.join(parent_path, name));
     const final_file_dir = path.join(dist_dir, path.dirname(file_path));
 
     let contents = await fs.promises.readFile(file_path, { encoding: "utf-8" });

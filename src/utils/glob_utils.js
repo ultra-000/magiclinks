@@ -104,7 +104,7 @@ export async function extract_dirs_from_glob (patterns, exclude) {
         const dirs_pattern_v1 = pattern + "/"; // A pattern to retrieve directories from globs like: `src/**`.
         const dirs_pattern_v2 = path.dirname(pattern)  + "/"; // A pattern to retrieve directories from files' globs example: `src/**/*.js`.
 
-        if (/^\*\*$/.test(pattern)) { // He/she have included the whole project, so no need for futher extracting.
+        if (MATCH_ALL_GLOB.test(pattern)) { // He/she have included the whole project, so no need for futher extracting.
             const fresh_dirs = {};
             for (const dir of await glob(dirs_pattern_v1, { ignore: exclude })) {
                 fresh_dirs[dir] = { extensions: [] };

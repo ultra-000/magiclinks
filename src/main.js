@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 import fs from "fs";
-import path from "path";
 import start_watch from "./utils/watch_mode.js";
 import { PARSED_PARAMETERS } from "./constants.js";
 import process_files from "./utils/process_files.js";
-import { load_config_helper } from "./utils/config_loading.js";
+import { initialize_default_config, load_config_helper } from "./utils/config_service.js";
 import { extract_dirs_from_glob, extract_files_from_glob } from "./utils/glob_utils.js";
 
+if (PARSED_PARAMETERS["-i"]) {
+  await initialize_default_config();
+  process.exit(0);
+}
 const config = await load_config_helper();
 
 /**
@@ -32,13 +35,8 @@ async function read_directory (directory, withFileTypes) {
  */
 async function main() {
   console.info("Magiclinks Running...");
-
   const { src_dirs, exclude, watch: watch_mode } = config;
-  const original_dist_dir = config.dist_dir;
-  config.dist_dir = path.normalize(PARSED_PARAMETERS["-o"] || config.dist_dir);
-
-  exclude.push(original_dist_dir + "/**", config.dist_dir + "/**");
-
+  
   if (!src_dirs.length) {
     console.info("No source directories were provided. exiting...");
     process.exit(0);

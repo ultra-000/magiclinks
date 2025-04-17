@@ -33,8 +33,7 @@ npm install --save-dev magiclinks
 ```sh
 npx magiclinks
 ```
-
-**IMPORTANT: you should run this command at your project's root ⚠️**
+**Warning: This command is deprecated and will just print help in the future, see the [CLI Options section](#cli-command-line-options-) for the new build command.**
 
 <br/>
 
@@ -69,9 +68,50 @@ you can read more if you want to but this is probably will get you started.
 
 ## CLI (Command-line) Options 👩‍💻
 
+### `-b` or `--build` option
+
+This is the primary command to process your project files using Magiclinks. When you run this command, Magiclinks will:
+
+1.  Read the configuration from your `magiclinks.config.js` file (or the file specified with `-c`).
+2.  Scan the files and directories specified in the `src_dirs` patterns.
+3.  For each file found (that isn't excluded by the `exclude` patterns or the `dist_dir`), it will replace all occurrences of the placeholder keys defined in your `links` object with their corresponding values.
+4.  Write the processed files to the specified `dist_dir`, preserving the original directory structure.
+
+This performs a one-time build operation. If you need Magiclinks to automatically rebuild when files change, use it with the `-w` or `--watch` option or the `watch` key with a value of `true` in your configuration file instead.
+
+**Example:**
+
+```sh
+npx magiclinks -b
+# or
+npx magiclinks --build
+```
+**IMPORTANT: you should run this command at your project's root ⚠️**
+
+<br/>
+
+### `-i` or `--init` option
+
+Quickly sets up Magiclinks by creating a default `magiclinks.config.js` (or `.magiclinks.config.js` if you are in your OS-specific home directory) file in your current working directory.
+
+If the file already exists, it will prompt you to either overwrite it or cancel the operation.
+
+**Example:**
+
+```sh
+npx magiclinks -i
+# or
+npx magiclinks --init
+```
+
+<br/>
+
 ### `-w` or `--watch` option
 
-Watch for file changes and build only that changed file once it changes. Example:
+Watch for file changes and build only that changed file once it changes.
+
+**Example:**
+
 ```sh
 npx magiclinks -w
 ```
@@ -81,7 +121,10 @@ this option is also available in the configuration file as well.
 
 ### `-c` or `--config` option
 
-Specify a custom on-the-fly configuration file. Example:
+Specify a custom on-the-fly configuration file.
+
+**Example:**
+
 ```sh
 npx magiclinks -c <path-to-config-file>
 # or
@@ -93,6 +136,9 @@ npx magiclinks --config <path-to-config-file>
 ### `-o` or `--output` option
 
 Specify a custom on-the-fly output directory.
+
+**Example:**
+
 ```sh
 npx magiclinks -o <path-to-output-directory>
 # or

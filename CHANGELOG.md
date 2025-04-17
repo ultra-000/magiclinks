@@ -12,6 +12,23 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
+## [v2.3.0] - 2025-04-17
+
+### Added
+- Added an `-i` or `--init` option to quickly set up Magiclinks by creating a default `magiclinks.config.js` file in your current working directory
+- Added a `-b` or `--build` option to process your project files using Magiclinks ([commit](https://github.com/ultra-000/magiclinks/commit/0ddc5cad4c5ab1b4f85f48a63363b4b3c96825a2))
+
+### deprecated
+- The bare `magiclinks` command without the `-b` or `--build` option will just print help in the future ([commit](https://github.com/ultra-000/magiclinks/commit/0ddc5cad4c5ab1b4f85f48a63363b4b3c96825a2))
+
+<br/>
+
+## [v2.2.0] - 2025-04-17
+
+Mistake, wasn't meant to be published (again 🙃). ([commit](https://github.com/ultra-000/magiclinks/commit/8da67b9e9e38a3db0480d3c9b3f602759a74536a))
+
+<br/>
+
 ## [v2.1.3] - 2025-04-15
 
 ### Fixed
@@ -220,6 +237,7 @@ Mistake, wasn't meant to be published. ([commit](https://github.com/ultra-000/ma
 ### Added
 - First release for Magiclinks ([commit](67078ccf5930877bfd37d7bd11c205c83ab5c1f9))
 
+[v2.3.0]: https://github.com/ultra-000/magiclinks/tree/8da67b9e9e38a3db0480d3c9b3f602759a74536a
 [v2.1.3]: https://github.com/ultra-000/magiclinks/tree/b2d9fd0df6ada6abe8d8d95b91ff70741c07d448
 [v2.1.2]: https://github.com/ultra-000/magiclinks/tree/97ccc86a99801dc65fe6b3817c819d6943a340a8
 [v2.1.1]: https://github.com/ultra-000/magiclinks/tree/7db12db278f1f9ae7df81cc3d5d007c2c8f3c056

@@ -98,7 +98,7 @@ export function extract_extensions_from_files_glob (pattern) {
  * @returns {object} - The directories as an object with the directory paths as keys
  */
 export async function extract_dirs_from_glob (patterns, exclude) {
-    const dirs = [];
+    const dirs = {};
 
     for (const pattern of patterns) {
         const dirs_pattern_v1 = pattern + "/"; // A pattern to retrieve directories from globs like: `src/**`.
@@ -107,7 +107,7 @@ export async function extract_dirs_from_glob (patterns, exclude) {
         if (MATCH_ALL_GLOB.test(pattern)) { // He/she have included the whole project, so no need for futher extracting.
             const fresh_dirs = {};
             for (const dir of await glob(dirs_pattern_v1, { ignore: exclude })) {
-                fresh_dirs[dir] = { extensions: [] };
+                fresh_dirs[dir] = { pattern };
             }
 
             return fresh_dirs;
@@ -115,15 +115,15 @@ export async function extract_dirs_from_glob (patterns, exclude) {
 
         if (FILES_MATCHING_GLOB.test(pattern) || DIRECT_CHILDREN_GLOB.test(pattern)) {
             for (const dir of await glob(DIRECT_CHILDREN_GLOB.test(pattern) && /\/\*\*\/\*$/.test(pattern) ? dirs_pattern_v1 : dirs_pattern_v2, { ignore: exclude })) {
-                !dirs[dir] ? dirs[dir] = { extensions: extract_extensions_from_files_glob(pattern) } : dirs[dir].extensions.push(...extract_extensions_from_files_glob(pattern));
+                !dirs[dir] ? dirs[dir] = { pattern } : null;
             }
         } else if (GENERAL_MATCHING_GLOB.test(pattern) ) {
             for (const dir of await glob(dirs_pattern_v1, { ignore: exclude })) {
-                !dirs[dir] ? dirs[dir] = { extensions: [] } : null;
+                !dirs[dir] ? dirs[dir] = { pattern } : null;
             }
         } else {
             for (const dir of await glob(pattern, { ignore: exclude })) {
-                !dirs[dir] ? dirs[dir] = { extensions: [] } : null;
+                !dirs[dir] ? dirs[dir] = { pattern } : null;
             }
         }
     }

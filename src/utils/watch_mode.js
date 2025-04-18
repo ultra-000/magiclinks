@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { watch } from "chokidar";
+import { minimatch } from "minimatch";
 import process_files from "./process_files.js";
 
 /**
@@ -21,7 +22,7 @@ export default function start_watch (directories, config) {
         if (!p) return;
 
         const dir = path.dirname(p);
-        if  (directories[dir].extensions.length && !directories[dir].extensions.includes(path.extname(p).substring(1))) return;
+        if  (!minimatch(p, directories[dir].pattern)) return;
         process_files([{ name: path.basename(p), parentPath: dir }], config);
     }
 

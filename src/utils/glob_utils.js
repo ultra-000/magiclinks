@@ -12,8 +12,8 @@ import { MATCH_ALL_GLOB, GENERAL_MATCHING_GLOB, FILES_MATCHING_GLOB, DIRS_MATCHI
 export async function extract_files_from_glob (patterns, excluded) {
     const files = [];
     for (const pattern of patterns) {
-        if (FILES_MATCHING_GLOB.test(pattern)) {
-            files.push(...[...await glob(pattern, {
+        if (FILES_MATCHING_GLOB.test(pattern) || DIRECT_CHILDREN_GLOB.test(pattern)) {
+            files.push(...[...await glob(pattern + (/\*\*\/\*$/.test(pattern) ? "/*" : ""), {
                 ignore: excluded,
                 withFileTypes: true,
             })].filter(f => !f.isDirectory()));
@@ -26,7 +26,7 @@ export async function extract_files_from_glob (patterns, excluded) {
     }
   
     return files;
-  }
+}
 
 /**
  * Extracts directories from glob patterns and determines their traversal mode.
@@ -114,7 +114,7 @@ export async function extract_dirs_from_glob (patterns, exclude) {
         }
 
         if (FILES_MATCHING_GLOB.test(pattern) || DIRECT_CHILDREN_GLOB.test(pattern)) {
-            for (const dir of await glob(DIRECT_CHILDREN_GLOB.test(pattern) && /\/\*\*\/\*$/ ? dirs_pattern_v1 : dirs_pattern_v2, { ignore: exclude })) {
+            for (const dir of await glob(DIRECT_CHILDREN_GLOB.test(pattern) && /\/\*\*\/\*$/.test(pattern) ? dirs_pattern_v1 : dirs_pattern_v2, { ignore: exclude })) {
                 !dirs[dir] ? dirs[dir] = { extensions: extract_extensions_from_files_glob(pattern) } : dirs[dir].extensions.push(...extract_extensions_from_files_glob(pattern));
             }
         } else if (GENERAL_MATCHING_GLOB.test(pattern) ) {

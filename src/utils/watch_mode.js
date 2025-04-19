@@ -22,7 +22,7 @@ export default function start_watch (directories, config) {
         if (!p) return;
 
         const dir = path.dirname(p);
-        if  (!minimatch(p, directories[dir].pattern)) return;
+        if  (!minimatch(p, directories[dir].pattern) && !/\/\*\*$|\/\*\*\/+$|\/\*$|\/$|\/\*\/+$|^(?!.*\.[^/]+$).*$/.test(directories[dir].pattern)) return;
         process_files([{ name: path.basename(p), parentPath: dir }], config);
     }
 

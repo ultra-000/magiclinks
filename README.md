@@ -238,8 +238,6 @@ After building using the `npx magiclinks` command, all `$_` prefixed strings wil
 
 **💡 Note:** While Magiclinks works great with any file type, **it's particularly powerful in languages that don't have native variables support** like HTML, XML, or something similar. but in JavaScript or even CSS you got native variables that could be used to achieve similar results.
 
-**💡 Note:** Your not restricted to the `$_` prefix you could really have anything as the key, it just a convention I made to avoid interactions with strings that aren't meant to be related to Magiclinks, but I recommend sticking to it as who knows maybe it will be used in a special way in the future.
-
 <br/>
 
 ### The `src_dirs` field 📂

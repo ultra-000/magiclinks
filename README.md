@@ -41,21 +41,42 @@ npx magiclinks
 
 The configuration file contains the links mappings and other options that Magiclinks will use to operate.
 
-**it should be placed at the project root and be named `magiclinks.config.js` (or if it is global and meant to be placed in your OS-specific home directory it should be `.magiclinks.config.js`) if your not using `-c` or `--config` option to specify a custom location ⚠️**
+Since `magiclinks.config.js` is a standard JavaScript file, you can:
+
+- Use variables and constants
+- Import other modules 
+- Write helper functions
+- Use template literals
+- Access environment variables
+- Any other JavaScript functionality
+
+<br/>
+
+**the configuration file should be placed at the project root and be named `magiclinks.config.js` (or if it is global and meant to be placed in your OS-specific home directory it should be `.magiclinks.config.js`) if your not using `-c` or `--config` option to specify a custom location ⚠️**
 
 **Here is a sample configuration file:**
 ```js
 // magiclinks.config.js
+import base_config from "./base_config.js"; // Do something with `base_config`
+
+const base = "https://example.com"; // base URL for links.
+const assets = `${base}/assets`; // base URL for assets.
 
 export default {
-  links: { // Define your links mappings here.
-    $_github: "https://github.com"
-    $_some_resource_with_a_variable_location: "assets/images/apple-touch-icon.png"
-  },
-  src_dirs: ["**/src/**", "**/views/**/*.html", "scripts/*.{js,ts}"], // The directories to be processed (e.g. `src`).
-  dist_dir: "./dist", // Change if needed. This will be excluded from the process by default. NOTE: this is a normal path not a glob pattern.
-  exclude: ["**/node_modules/**", "**/.git/**", "**/.env", "**/.gitignore", "**/build/**"], // The directories to be excluded from the process (e.g. `node_modules`).
-  watch: true, // Watch for file changes and build only that changed file once it changes.
+    links: { // Define your links mappings here.
+        $_base: base,
+        $_assets: assets,
+        $_home: `${base}/index.html`,
+        $_404: `${base}/404.html`, // :|
+        $_about: `${base}/about.html`,
+        $_products: `${base}/products/listing`,
+        $_placeholder_profile_pic: `${assets}/images/profile.png`,
+        $_100x100_placeholder: `https://placeholde.co/100x100`,
+    },
+    src_dirs: ["**/src/**", "**/public/**"], // The directories to be processed (e.g. `src`).
+    dist_dir: "dist", // Change if needed. This will be excluded from the process by default. NOTE: this is a normal path not a glob pattern.
+    exclude: ["**/node_modules/**", "**/.git/**", "**/.env", "**/.gitignore", "**/build/**"], // The directories to be excluded from the process (e.g. `node_modules`).
+    watch: true, // Watch for file changes and build only that changed file once it changes.
 };
 ```
 

@@ -59,18 +59,16 @@ Since `magiclinks.config.js` is a standard JavaScript file, you can:
 // magiclinks.config.js
 import base_config from "./base_config.js"; // Do something with `base_config`
 
-const base = "https://example.com"; // base URL for links.
-const assets = `${base}/assets`; // base URL for assets.
-
 export default {
     links: { // Define your links mappings here.
-        $_base: base,
-        $_assets: assets,
-        $_home: `${base}/index.html`,
-        $_404: `${base}/404.html`, // :|
-        $_about: `${base}/about.html`,
-        $_products: `${base}/products/listing`,
-        $_placeholder_profile_pic: `${assets}/images/profile.png`,
+        $_base: "https://example.com", // Base URL for links.
+        $_assets: "$_base/assets", // Assets URL.
+        $_image_assets: "$_assets/images", // Images URL.
+        $_home: "$_base/index.html",
+        $_404: "$_base/404.html", // :|
+        $_about: "$_base/about.html",
+        $_products: "$_base/products/listing",
+        $_placeholder_profile_pic: "$_image_assets/profile.png",
         $_100x100_placeholder: `https://placeholde.co/100x100`,
     },
     src_dirs: ["**/src/**", "**/public/**"], // The directories to be processed (e.g. `src`).
@@ -87,7 +85,7 @@ you can read more if you want to but this is probably will get you started.
 
 <br/>
 
-## Highlights: from v2.3.4 to 2.4.0
+## Highlights: from v2.3.4 to 2.4.0 (and above)
 <span style="color: #aaa;">ℹ️ You can skip this if you don't care about in-between features.</span>
 
 ### Dynamic links resolving

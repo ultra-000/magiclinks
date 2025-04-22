@@ -17,8 +17,8 @@
   "author": "Abd Elrahman Nour",
   "files": [
     "src",
-    "LICENSE",
     "README.md",
+    "LICENSE.txt",
     "CHANGELOG.md"
   ],
   "keywords": [
@@ -34,5 +34,8 @@
     "@inquirer/prompts": "^7.4.1",
     "chokidar": "^4.0.3",
     "glob": "^11.0.1"
+  },
+  "devDependencies": {
+    "magiclinks": "^2.4.1"
   }
 }

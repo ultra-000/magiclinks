@@ -12,6 +12,14 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
+## [v2.4.0] - 2025-04-22
+
+### Added
+- Added support for dynamic links resolving ([commit](https://github.com/ultra-000/magiclinks/commit/639ed1612890b709d734d555d6c990969c0b7ada))
+- No quotes (or backticks) are needed anymore for surrounding placeholder links ([commit](https://github.com/ultra-000/magiclinks/commit/639ed1612890b709d734d555d6c990969c0b7ada))
+
+<br/>
+
 ## [v2.3.1] - 2025-04-17
 
 ### Fixed
@@ -244,6 +252,7 @@ Mistake, wasn't meant to be published. ([commit](https://github.com/ultra-000/ma
 ### Added
 - First release for Magiclinks ([commit](67078ccf5930877bfd37d7bd11c205c83ab5c1f9))
 
+[v2.4.0]: https://github.com/ultra-000/magiclinks/tree/808b0a13f75cd8b362b9b30d7b16e164e5a83c68
 [v2.3.1]: https://github.com/ultra-000/magiclinks/tree/a76fec69b84e666d782a4e11696be1b47a184a3b
 [v2.3.0]: https://github.com/ultra-000/magiclinks/tree/8da67b9e9e38a3db0480d3c9b3f602759a74536a
 [v2.2.0]: https://github.com/ultra-000/magiclinks/tree/8da67b9e9e38a3db0480d3c9b3f602759a74536a

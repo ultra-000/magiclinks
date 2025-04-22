@@ -52,7 +52,7 @@ Since `magiclinks.config.js` is a standard JavaScript file, you can:
 
 <br/>
 
-**the configuration file should be placed at the project root and be named `magiclinks.config.js` (or if it is global and meant to be placed in your OS-specific home directory it should be `.magiclinks.config.js`) if your not using `-c` or `--config` option to specify a custom location ⚠️**
+**⚠️ the configuration file should be placed at the project root and be named `magiclinks.config.js` (or if it is global and meant to be placed in your OS-specific home directory it should be `.magiclinks.config.js`) if your not using `-c` or `--config` option to specify a custom location**
 
 **Here is a sample configuration file:**
 ```js
@@ -87,6 +87,56 @@ you can read more if you want to but this is probably will get you started.
 
 <br/>
 
+## Highlights: from v2.3.4 to 2.4.0
+<span style="color: #aaa;">ℹ️ You can skip this if you don't care about in-between features.</span>
+
+### Dynamic links resolving
+In version `2.3.4` you couldn't use dynamic links, for example if you wanted to use a base URL and then append the rest of the URL to it you couldn't do that, you had to use template literals, for example:
+```js
+// magiclinks.config.js
+const base = "https://example.com"; // base URL for links.
+export default {
+    links: {
+        $_base: "https://example.com",
+        $_assets: "$_base/assets", // This will not work in v2.3.4
+        $_assets: `${base}/assets`, // But this will work in v2.3.4
+
+    },
+}
+```
+but in version `2.4.0` you can use the first one and it will work just fine, so you can do something like this:
+```js
+// magiclinks.config.js
+const base = "https://example.com"; // base URL for links.
+export default {
+    links: {
+        $_base: base,
+        $_assets: "$_base/assets", // This will work in v2.4.0
+        $_assets: `${base}/assets`, // And this will work too!
+    },
+}
+```
+
+<br/>
+
+### No needed quotes anymore!
+In version `2.3.4` you had to use quotes (or backticks) around the links (be it single or double), for example:
+```css
+/* style.css */
+body {
+    background-image: url("$_base/assets/images/background.jpg");
+}
+```
+but in version `2.4.0` you can use it without quotes, for example:
+```css
+/* style.css */
+body {
+    background-image: url($_base/assets/images/background.jpg);
+}
+```
+
+<br/>
+
 ## CLI (Command-line) Options 👩‍💻
 
 ### `-b` or `--build` option
@@ -107,7 +157,7 @@ npx magiclinks -b
 # or
 npx magiclinks --build
 ```
-**IMPORTANT: you should run this command at your project's root ⚠️**
+**⚠️ IMPORTANT: you should run this command at your project's root**
 
 <br/>
 

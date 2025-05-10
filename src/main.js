@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import fs from "fs";
-import start_watch from "./utils/watch_mode.js";
+import start_watch from "./services/watch_mode.js";
 import { PARSED_PARAMETERS } from "./constants.js";
-import process_files from "./utils/process_files.js";
-import { initialize_default_config, load_config_helper } from "./utils/config_service.js";
-import { extract_dirs_from_glob, extract_files_from_glob } from "./utils/glob_utils.js";
+import process_files from "./services/process_files.js";
+import { initialize_default_config, load_config_helper } from "./services/config_service.js";
+import { extract_files_from_glob } from "./utils/glob_utils.js";
 
 if (PARSED_PARAMETERS["-i"]) {
   await initialize_default_config();
@@ -49,7 +49,7 @@ async function main() {
     // Start watch mode after processing is done
     if (PARSED_PARAMETERS["-w"] || watch_mode) {
       console.info("Initial processing complete. Starting watch mode...");
-      start_watch(await extract_dirs_from_glob(src_dirs, exclude), config);
+      start_watch(config);
     }
   } catch (error) {
     console.error("Error during processing:", error.message);

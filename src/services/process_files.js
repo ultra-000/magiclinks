@@ -10,6 +10,7 @@ import { PROCESS_CWD } from "../constants.js";
  * @returns {string} The fully resolved value
  */
 function resolve_link_value(value, links, seen = new Set()) {
+  if (typeof value !== "string") return; // TODO: look more about this topic (URLs/URIs can't be any other data type?).
   if (!value.includes("$_")) return value;
   
   const path_segments = value.split("/");
@@ -63,6 +64,6 @@ export default async function process_files(files, config) {
 
     await fs.promises.mkdir(final_file_dir, { recursive: true });
     await fs.promises.writeFile(path.join(dist_dir, file_path), contents);
-    console.info(`Processed ${file_path}`);
+    console.info(`Processed: ${file_path}`);
   }));
 }

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
-import { isPaired } from "./utils.js";
+import { isPaired } from "../utils/utils.js";
 import { select } from "@inquirer/prompts";
 import { CONFIG_LOCATIONS, PACKAGE_ROOT, PARSED_PARAMETERS, PROCESS_CWD, DEFAULT_CONFIG_PATH } from "../constants.js";
 

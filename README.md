@@ -264,7 +264,7 @@ export default {
     "public/*.html"
   ],
   dist_dir: "dist",
-  exclude: ["**/node_modules/**", "**/.git/**", "**/build/**", "**/coverage/**"],
+  exclude: ["**/node_modules/**", "**/.env" "**/.git/**", "**/build/**", "**/coverage/**"],
   watch: false,
 }
 ```

@@ -12,6 +12,13 @@ More technical details [here](https://github.com/ultra-000/magiclinks/compare/HE
 
 <br/>
 
+## [v2.5.0] - 2025-05-10
+
+### Added
+- Added support for watching new added directories/folders in watch mode ([commit](https://github.com/ultra-000/magiclinks/commit/3b5769ee7fed6cccc0970a3bdf131589aab618a3))
+
+<br/>
+
 ## [v2.4.0] - 2025-04-22
 
 ### Added
@@ -252,6 +259,7 @@ Mistake, wasn't meant to be published. ([commit](https://github.com/ultra-000/ma
 ### Added
 - First release for Magiclinks ([commit](https://github.com/ultra-000/magiclinks/commit/67078ccf5930877bfd37d7bd11c205c83ab5c1f9))
 
+[v2.5.0]: https://github.com/ultra-000/magiclinks/tree/a08d5a3f3a5401aaca7278fd6a2dc9f5681786af
 [v2.4.0]: https://github.com/ultra-000/magiclinks/tree/808b0a13f75cd8b362b9b30d7b16e164e5a83c68
 [v2.3.1]: https://github.com/ultra-000/magiclinks/tree/a76fec69b84e666d782a4e11696be1b47a184a3b
 [v2.3.0]: https://github.com/ultra-000/magiclinks/tree/8da67b9e9e38a3db0480d3c9b3f602759a74536a
